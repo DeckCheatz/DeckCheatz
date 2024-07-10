@@ -23,7 +23,7 @@
         pkgs = nixpkgs.outputs.legacyPackages.${system};
       in
       {
-        packages.deckcheatz = pkgs.callPackage ./deckcheatz.nix { };
+        packages.deckcheatz = pkgs.callPackage ./dist/Nix/deckcheatz.nix { };
         packages.default = self.outputs.packages.${system}.deckcheatz;
 
         devShells.default = self.packages.${system}.default.overrideAttrs (super: {

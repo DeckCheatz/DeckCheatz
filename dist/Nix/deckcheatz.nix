@@ -10,10 +10,10 @@
 rustPlatform.buildRustPackage {
   name = "deckcheatz";
 
-  src = lib.cleanSource ./.;
+  src = lib.cleanSource ./../../.;
 
   cargoLock = {
-    lockFile = ./Cargo.lock;
+    lockFile = ./../../Cargo.lock;
     # Allow dependencies to be fetched from git and avoid having to set the outputHashes manually
     allowBuiltinFetchGit = true;
   };
@@ -23,7 +23,7 @@ rustPlatform.buildRustPackage {
 
   meta = with lib; {
     description = "";
-    homepage = "https://github.com/DeckCheatz/deckcheatz";
+    homepage = "https://github.com/DeckCheatz/DeckCheatz";
     license = licenses.asl20;
   };
 }
