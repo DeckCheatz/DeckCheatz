@@ -18,6 +18,9 @@ rustPlatform.buildRustPackage {
     allowBuiltinFetchGit = true;
   };
 
+  buildNoDefaultFeatures = true;
+  buildFeatures = ["wemod"];
+
   nativeBuildInputs = with pkgs; [ pkg-config cmake openssl.dev ];
   buildInputs = with pkgs; [ openssl.dev ];
 
