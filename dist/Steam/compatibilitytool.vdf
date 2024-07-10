@@ -1,0 +1,13 @@
+"compatibilitytools"
+{
+  "compat_tools"
+  {
+    "DeckCheatz"
+    {
+      "install_path" "."
+      "display_name" "DeckCheatz"
+      "from_oslist"  "linux"
+      "to_oslist"    "linux"
+    }
+  }
+}

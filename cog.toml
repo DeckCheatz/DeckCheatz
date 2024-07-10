@@ -1,0 +1,16 @@
+# SPDX-FileCopyrightText: 2024 The DeckCheatz Developers
+#
+# SPDX-License-Identifier: Apache-2.0
+
+ignore_merge_commits = false
+branch_whitelist = []
+pre_bump_hooks = []
+post_bump_hooks = []
+
+[commit_types]
+
+[changelog]
+path = "CHANGELOG.md"
+authors = []
+
+[bump_profiles]

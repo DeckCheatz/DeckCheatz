@@ -1,0 +1,24 @@
+# SPDX-FileCopyrightText: 2024 The DeckCheatz Developers
+#
+# SPDX-License-Identifier: Apache-2.0
+
+---
+name: CI Tests
+
+on:
+  push:
+    paths: ["src/**", "Cargo.toml", "Cargo.lock", "rust-toolchain.toml", "*.nix"]
+  workflow_dispatch:
+  workflow_run:
+    workflows: ["Update Flatpak Cargo data"]
+    types:
+      - completed
+
+jobs:
+  test-linux:
+    uses: ./.github/workflows/ci-tests-linux.yml
+    secrets: inherit
+
+  test-nix-pm:
+    uses: ./.github/workflows/ci-nix-pm-tests.yml
+    secrets: inherit

@@ -1,0 +1,26 @@
+# SPDX-FileCopyrightText: 2024 The DeckCheatz Developers
+#
+# SPDX-License-Identifier: Apache-2.0
+
+---
+name: Nix packaging tests
+
+on:
+  workflow_call:
+
+jobs:
+  check-flake:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4.1.4
+      - uses: cachix/install-nix-action@V27
+      - name: Check Nix Flake
+        run: nix flake check --print-build-logs
+
+  check-nix-build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4.1.4
+      - uses: cachix/install-nix-action@V27
+      - name: Build package
+        run: nix build --print-build-logs

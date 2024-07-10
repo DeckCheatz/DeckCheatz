@@ -1,0 +1,65 @@
+# SPDX-FileCopyrightText: 2024 The DeckCheatz Developers
+#
+# SPDX-License-Identifier: Apache-2.0
+
+---
+name: Release builder for Linux
+
+on:
+  workflow_run:
+    workflows: [CI test workflow]
+    types: [completed]
+    branches: [main]
+
+permissions:
+  contents: write
+
+env:
+  CARGO_TERM_COLOR: always
+jobs:
+  create-gh-release:
+    name: Create release on GitHub.
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout sources
+        uses: actions/checkout@v4.1.4
+
+      - name: Create release
+        uses: taiki-e/create-gh-release-action@v1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+  upload-release:
+    needs: [create-gh-release]
+    name: Release uploader for Linux builds
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout sources
+        uses: actions/checkout@v4.1.4
+      - name: Cache Rust assets
+        id: rust-cache
+        uses: Swatinem/rust-cache@v2
+      - name: Configure Rust
+        if: ${{ steps.rust-cache.outputs.cache-hit != 'true' }}
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: 1.72.1
+          default: true
+          components: llvm-tools-preview
+          override: true
+          target: x86_64-unknown-linux-musl
+          profile: minimal
+      - name: Install Cross
+        if: ${{ steps.rust-cache.outputs.cache-hit != 'true' }}
+        uses: brndnmtthws/rust-action-cargo-binstall@v1.1.0
+        with:
+          packages: cross
+      - name: Build & upload DeckCheatz on GH Releases
+        uses: taiki-e/upload-rust-binary-action@v1
+        with:
+          bin: stoybox
+          target: x86_64-unknown-linux-musl
+          token: ${{ secrets.GITHUB_TOKEN }}
+          archive: steam-toybox-${{ github.ref_name }}-release-x86_64-unknown-linux-musl
+          zip: all
+          checksum: sha256

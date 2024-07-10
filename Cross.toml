@@ -1,0 +1,9 @@
+# SPDX-FileCopyrightText: 2024 The DeckCheatz Developers
+#
+# SPDX-License-Identifier: Apache-2.0
+
+[target.x86_64-unknown-linux-musl]
+pre-build = [
+    "dpkg --add-architecture amd64",
+    "apt-get update && apt-get install --assume-yes libssl-dev:amd64"
+]

@@ -1,0 +1,28 @@
+# SPDX-FileCopyrightText: 2024 The DeckCheatz Developers
+#
+# SPDX-License-Identifier: Apache-2.0
+
+---
+name: Update Flatpak Cargo data
+
+on:
+  push:
+    branches: [main]
+    paths: ["Cargo.lock"]
+  workflow_dispatch:
+
+jobs:
+  update-flatpak-cargo-data:
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          git config --global user.email "github-actions+deckcheatz@noreply.github.com"
+          git config --global user.name "GitHub Actions [Deckcheatz]"
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+      - run: pip install --user toml aiohttp
+      - run: |
+          ./script/flatpak-cargo-generator.py -o ./dist/Flatpak/generated-sources.json ./Cargo.lock
+          git add -f ./dist/Flatpak/generated-sources.json
+          git commit -m "chore(flatpak): Update generated-sources.json for Flatpak usage"
+          git push origin main:main

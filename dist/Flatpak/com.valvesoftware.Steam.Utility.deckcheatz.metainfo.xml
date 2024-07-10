@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop-application">
+  <id>com.valvesoftware.Steam.Utility.deckcheatz</id>
+  <metadata_license>CC0</metadata_license>
+  <project_license>Apache-2.0</project_license>
+  <name>DeckCheatz</name>
+  <summary>Gaming Assistant box, for tweaking gamers. Written in Rust, extendable with WebAssembly.</summary>
+  <description>
+  </description>
+  <screenshots>
+  </screenshots>
+  <url type="homepage">https://DeckCheatz.github.io/DeckCheatz</url>
+  <content_rating type="oars-1.0" />
+  <releases>
+    <release version="0.1.0" date="2020-02-08">
+      <description>
+        <p>First release of DeckCheatz.</p>
+      </description>
+    </release>
+  </releases>
+  <developer_name>Dom Rodriguez (shymega)</developer_name>
+  <update_contact>shymega+deckcheatz@shymega.org.uk</update_contact>
+
+  <launchable type="desktop-id">com.valvesoftware.Steam.Utility.deckcheatz.desktop</launchable>
+</component>
+
+
