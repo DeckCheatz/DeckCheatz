@@ -6,10 +6,7 @@
 name: Release builder for Linux
 
 on:
-  workflow_run:
-    workflows: [CI test workflow]
-    types: [completed]
-    branches: [main]
+  workflow_call:
 
 permissions:
   contents: write
