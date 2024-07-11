@@ -19,7 +19,7 @@ rustPlatform.buildRustPackage {
   };
 
   buildNoDefaultFeatures = true;
-  buildFeatures = ["wemod"];
+  buildFeatures = [ "wemod" ];
 
   nativeBuildInputs = with pkgs; [ pkg-config cmake openssl.dev ];
   buildInputs = with pkgs; [ openssl.dev ];
