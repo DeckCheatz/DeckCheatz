@@ -1,0 +1,40 @@
+# SPDX-FileCopyrightText: 2024 The DeckCheatz Developers
+#
+# SPDX-License-Identifier: Apache-2.0
+
+app-id: com.valvesoftware.Steam.Utility.deckcheatz
+runtime: com.valvesoftware.Steam
+runtime-version: stable
+sdk: org.freedesktop.Sdk//23.08
+sdk-extensions:
+  - org.freedesktop.Sdk.Extension.rust-stable
+build-extension: true
+appsteam-compose: false
+finish-args:
+  - --socket=fallback-x11
+  - --socket=wayland
+  - --device=dri
+build-options:
+  prefix: /app/utils/deckcheatz
+  append-path: /usr/lib/sdk/rust-stable/bin
+  env:
+    CARGO_HOME: /run/build/rust-flatpak/cargo
+  strip: true
+modules:
+  - name: rust-flatpak
+    buildsystem: simple
+    build-commands:
+      - cargo --offline fetch --manifest-path Cargo.toml --verbose
+      - cargo --offline build --release --verbose
+      - install -Dm755 ./target/release/deckcheatz -t /app/utils/deckcheatz
+    sources:
+      - generated-sources.json
+      - type: dir
+        path: ../
+  - name: metadata
+    buildsystem: simple
+    build-commands:
+      - install -Dm644 ./dist/flatpak/${FLATPAK_ID}.metainfo.xml -t ${FLATPAK_DEST}/share/metainfo
+    sources:
+      - type: dir
+        path: ../
