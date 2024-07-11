@@ -4,8 +4,16 @@
 
 [package]
 name = "deckcheatz"
+license = "Apache-2.0"
 version = "0.1.0"
 edition = "2021"
+readme = "README.md"
+repository = "https://github.com/DeckCheatz/DeckCheatz.git"
+homepage = "https://DeckCheatz.github.io"
+authors = ["Dom Rodriguez <shymega@shymega.org.uk>"]
+keywords = ["game-trainers", "gaming", "proton", "wine", "wemod", "plitch"]
+categories = ["games"]
+description = "Portable, Flatpak-ready, game trainer interface for Steam Deck and other Linux systems."
 
 [features]
 default = ["wemod"]
