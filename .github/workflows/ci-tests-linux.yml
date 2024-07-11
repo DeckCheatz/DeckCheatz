@@ -22,7 +22,7 @@ jobs:
         id: rust-cache
         uses: Swatinem/rust-cache@v2
       - name: Configure Rust
-        if: ${{ steps.rust-cache.outputs.cache-hit != 'true' }}
+        if: ${{ steps.rust-cache.outputs.cache-hit == 'false' }}
         uses: actions-rs/toolchain@v1
         with:
           toolchain: stable
@@ -32,7 +32,7 @@ jobs:
           target: x86_64-unknown-linux-musl
           default: true
       - name: Install Cross
-        if: ${{ steps.rust-cache.outputs.cache-hit != 'true' }}
+        if: ${{ steps.rust-cache.outputs.cache-hit == 'false' }}
         uses: brndnmtthws/rust-action-cargo-binstall@v1.1.0
         with:
           packages: cross

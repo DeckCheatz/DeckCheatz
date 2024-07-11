@@ -20,5 +20,5 @@ jobs:
     secrets: inherit
 
   test-nix-pm:
-    uses: ./.github/workflows/ci-nix-pm-tests.yml
+    uses: ./.github/workflows/ci-tests-nix.yml
     secrets: inherit
