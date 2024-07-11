@@ -37,4 +37,4 @@ modules:
       - install -Dm644 ./dist/Flatpak/${FLATPAK_ID}.metainfo.xml -t ${FLATPAK_DEST}/share/metainfo
     sources:
       - type: dir
-        path: ../
+        path: ../../
