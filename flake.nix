@@ -24,7 +24,7 @@
     , flake-utils
     , devenv
     , ...
-    }:
+    }@inputs:
     flake-utils.lib.eachDefaultSystem
       (system:
       let
@@ -34,9 +34,13 @@
         packages.deckcheatz = pkgs.callPackage ./dist/Nix/deckcheatz.nix { };
         packages.default = self.outputs.packages.${system}.deckcheatz;
 
-        devShells.${system}.default = devenv.lib.mkShell {
-          inherit pkgs self system;
-          imports = [ ./devenv.nix ];
+        devShells.${system} = devenv.lib.mkShell {
+          inherit inputs pkgs;
+          modules = [
+            ({ inputs, pkgs, ... }: {
+              imports = [ ./devenv.nix ];
+            })
+          ];
         };
       }) // {
       overlays.default = final: prev: {
