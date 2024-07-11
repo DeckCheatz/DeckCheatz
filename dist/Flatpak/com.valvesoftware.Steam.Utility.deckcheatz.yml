@@ -30,7 +30,7 @@ modules:
     sources:
       - generated-sources.json
       - type: dir
-        path: ../
+        path: ../..
   - name: metadata
     buildsystem: simple
     build-commands:
