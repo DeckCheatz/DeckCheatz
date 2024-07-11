@@ -26,3 +26,4 @@ jobs:
           git add -f ./dist/Flatpak/generated-sources.json
           git commit -m "chore(flatpak): Update generated-sources.json for Flatpak usage"
           git push origin main:main
+          exit 0
