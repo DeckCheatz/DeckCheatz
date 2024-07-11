@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2024 The DeckCheatz Developers
+#
+# SPDX-License-Identifier: Apache-2.0
+
 { pkgs, ... }:
 
 {
