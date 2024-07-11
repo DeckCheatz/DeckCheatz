@@ -2,16 +2,37 @@
 // SPDX-License-Identifier: Apache-2.0
 
 use color_eyre::eyre::{Report, Result};
+use log::debug;
 
-fn setup_eyre() -> Result<()> {
-    Ok(color_eyre::config::HookBuilder::default()
-        .issue_url(concat!(env!("CARGO_PKG_REPOSITORY"), "/issues/new"))
-        .add_issue_metadata("version", env!("CARGO_PKG_VERSION"))
-        .install()?)
+#[cfg(not(debug_assertions))]
+use std::io;
+
+fn init_app() -> Result<()> {
+    env_logger::init(); // Initialize logger.
+    debug!("Logger initialized.");
+
+    color_eyre::install()?; // Initialize error handling.
+    debug!("Error handling initialized.");
+
+    debug!("Base app initialized.");
+    Ok(())
 }
+
 #[tokio::main]
 async fn main() -> Result<(), Report> {
-    setup_eyre()?;
+    // Tokio should be active.
+    // Init base app.
+    init_app()?;
 
-    Ok(())
+    // Logging initialized.
+    // Error handling initialised.
+
+    #[cfg(not(debug_assertions))]
+    return Err(io::Error::new(
+        io::ErrorKind::Other,
+        "This program is a WIP!",
+    ))?;
+
+    #[cfg(debug_assertions)]
+    return Ok(());
 }
