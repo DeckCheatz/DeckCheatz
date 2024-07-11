@@ -4,17 +4,25 @@
 
 {
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.05";
+    devenv.url = "github:cachix/devenv";
     flake-utils.url = "github:numtide/flake-utils";
     flake-compat = {
       url = "github:edolstra/flake-compat";
       flake = false;
     };
   };
+
+  nixConfig = {
+    extra-trusted-public-keys = "devenv.cachix.org-1:w1cLUi8dv3hnoSPGAuibQv+f9TZLr6cv/Hm9XgU50cw=";
+    extra-substituters = "https://devenv.cachix.org";
+  };
+
   outputs =
     { self
     , nixpkgs
     , flake-utils
+    , devenv
     , ...
     }:
     flake-utils.lib.eachDefaultSystem
@@ -26,18 +34,11 @@
         packages.deckcheatz = pkgs.callPackage ./dist/Nix/deckcheatz.nix { };
         packages.default = self.outputs.packages.${system}.deckcheatz;
 
-        devShells.default = self.packages.${system}.default.overrideAttrs (super: {
-          nativeBuildInputs = with pkgs;
-            super.nativeBuildInputs
-            ++ [
-              cargo-edit
-              clippy
-              rustfmt
-            ];
-          RUST_SRC_PATH = "${pkgs.rustPlatform.rustLibSrc}";
-        });
-      })
-    // {
+        devShells.${system}.default = devenv.lib.mkShell {
+          inherit pkgs self system;
+          imports = [ ./devenv.nix ];
+        };
+      }) // {
       overlays.default = final: prev: {
         inherit (self.packages.${final.system}) deckcheatz;
       };
