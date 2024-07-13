@@ -16,7 +16,6 @@ finish-args:
   - --socket=wayland
   - --device=dri
 build-options:
-  prefix: /app/utils/deckcheatz
   append-path: /usr/lib/sdk/rust-stable/bin
   env:
     CARGO_HOME: /run/build/rust-flatpak/cargo
@@ -26,26 +25,20 @@ modules:
     buildsystem: simple
     build-commands:
       - cargo --offline fetch --manifest-path Cargo.toml --verbose
-      - cargo --offline build --release --verbose
-      - install -Dm755 ./target/release/deckcheatz -t /app/utils/deckcheatz
+      - cargo --offline build --verbose
+      - install -Dm755 ./target/debug/deckcheatz -t ${FLATPAK_DEST}/bin
     sources:
       - generated-sources.json
       - type: dir
         path: ../..
   - name: steamcompat
-    build-options:
-      env:
-        PREFIX: ${FLATPAK_DEST}
     buildsystem: simple
     build-commands:
-      - install -Dm644 -t ${FLATPAK_DEST}/share/steam/compatibilitytools.d/DeckCheatz ../Steam/compatibilitytool.vdf
-      - install -Dm644 -t ${FLATPAK_DEST} ../Steam/toolmanifest.vdf
+      - install -Dm644 -t ${FLATPAK_DEST}/share/steam/compatibilitytools.d/DeckCheatz compatibilitytool.vdf
+      - install -Dm644 -t ${FLATPAK_DEST} toolmanifest.vdf
     sources:
-      - type: file
-        path: ../Steam/compatibilitytool.vdf
-      - type: file
-        path: ../Steam/toolmanifest.vdf
-
+      - type: dir
+        path: ../Steam
   - name: metadata
     buildsystem: simple
     build-commands:
