@@ -1,0 +1,9 @@
+[submodule "build-aux/flatpak/flatpak-builder-tools"]
+	path = build-aux/flatpak/flatpak-builder-tools
+	url = https://github.com/flatpak/flatpak-builder-tools
+[submodule "script/flatpak-builder-tools"]
+	path = script/flatpak-builder-tools
+	url = https://github.com/flatpak/flatpak-builder-tools
+[submodule "build-aux/flatpak/shared-modules"]
+	path = build-aux/flatpak/shared-modules
+	url = https://github.com/flathub/shared-modules

@@ -4,6 +4,9 @@
 
 [target.x86_64-unknown-linux-musl]
 pre-build = [
-    "dpkg --add-architecture amd64",
-    "apt-get update && apt-get install --assume-yes libssl-dev:amd64"
+  "dpkg --add-architecture amd64",
+  "DEBIAN_FRONTEND=noninteractive TZ=Europe/London apt-get update --assume-yes",
+  "DEBIAN_FRONTEND=noninteractive TZ=Europe/London apt-get upgrade --assume-yes",
+  "DEBIAN_FRONTEND=noninteractive TZ=Europe/London apt-get dist-upgrade --assume-yes",
+  "DEBIAN_FRONTEND=noninteractive TZ=Europe/London apt-get install --assume-yes libxcb-render0-dev:amd64 libxcb-shape0-dev:amd64 libxcb-xfixes0-dev:amd64 libxkbcommon-dev:amd64 libssl-dev:amd64"
 ]

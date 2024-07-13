@@ -1,0 +1,58 @@
+﻿id: com.valvesoftware.Steam.CompatibilityTool.deckcheatz
+default-branch: stable
+sdk: org.gnome.Sdk//46
+runtime: com.valvesoftware.Steam
+runtime-version: stable
+build-extension: true
+appstream-compose: false
+separate-locales: false
+sdk-extensions:
+  - org.freedesktop.Sdk.Extension.rust-stable
+finish-args:
+  - '--socket=fallback-x11'
+  - '--socket=wayland'
+  - '--device=dri'
+  - '--share=ipc'
+build-options:
+  prepend-path: 'usr/lib/sdk/node20/bin:/usr/lib/sdk/rust-stable/bin:/app/share/steam/compatibilitytools.d/DeckCheatz/bin'
+  prefix: '/app/share/steam/compatibilitytools.d/DeckCheatz/'
+  prepend-pkg-config-path: '/app/share/steam/compatibilitytools.d/DeckCheatz/lib/pkgconfig'
+  prepend-ld-library-path: '/app/share/steam/compatibilitytools.d/DeckCheatz/lib/'
+  strip: true
+modules:
+  - name: deckcheatz
+    buildsystem: simple
+    build-options:
+      prefix: '/app/share/steam/compatibilitytools.d/deckcheatz/'
+      env:
+        CARGO_HOME: '/run/build/deckcheatz/cargo'
+        CARGO_NET_OFFLINE: 'true'
+    build-commands:
+      - 'cargo --offline --frozen fetch --verbose'
+      - 'cargo --offline --frozen build --release --verbose'
+      - 'install -Dm755 -t ${FLATPAK_DEST}/bin target/release/deckcheatz'
+    sources:
+      - type: dir
+        path: ../../.
+      - generated-cargo-sources.json
+  - name: steamcompat
+    build-options:
+      prefix: /app/share/steam/compatibilitytools.d/deckcheatz/
+    buildsystem: simple
+    build-commands:
+      - 'install -Dm644 -t ${FLATPAK_DEST} compatibilitytool.vdf'
+      - 'install -Dm644 -t ${FLATPAK_DEST} toolmanifest.vdf'
+      - 'install -Dm644 -t ${FLATPAK_DEST}/app/share/steam/compatibilitytools.d/DeckCheatz compatibilitytool.vdf'
+      - 'install -Dm644 -t ${FLATPAK_DEST} toolmanifest.vdf'
+    sources:
+      - type: file
+        path: 'steam/toolmanifest.vdf'
+      - type: file
+        path: 'steam/compatibilitytool.vdf'
+  - name: meta
+    buildsystem: simple
+    build-commands:
+      - 'install -Dm644 -t ${FLATPAK_DEST}/app/share/metainfo ${FLATPAK_ID}.metainfo.xml'
+    sources:
+      - type: file
+        path: com.valvesoftware.Steam.CompatibilityTool.deckcheatz.metainfo.xml

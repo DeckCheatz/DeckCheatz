@@ -10,7 +10,7 @@ on:
     paths: ["src/**", "Cargo.toml", "Cargo.lock", "rust-toolchain.toml", "*.nix"]
   workflow_dispatch:
   workflow_run:
-    workflows: ["Update Flatpak Cargo data"]
+    workflows: ["Update Flatpak Cargo lockfile"]
     types:
       - completed
 

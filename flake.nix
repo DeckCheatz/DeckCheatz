@@ -31,9 +31,9 @@
         pkgs = nixpkgs.outputs.legacyPackages.${system};
       in
       {
-        packages.deckcheatz = pkgs.callPackage ./dist/Nix/deckcheatz.nix { };
+        packages.deckcheatz = pkgs.callPackage ./build-aux/nix/deckcheatz.nix { };
         packages.default = self.outputs.packages.${system}.deckcheatz;
-
+        # use flake-parts
         devShells.${system} = devenv.lib.mkShell {
           inherit inputs pkgs;
           modules = [
