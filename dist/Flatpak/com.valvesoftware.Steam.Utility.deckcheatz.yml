@@ -9,7 +9,8 @@ sdk: org.freedesktop.Sdk//23.08
 sdk-extensions:
   - org.freedesktop.Sdk.Extension.rust-stable
 build-extension: true
-appsteam-compose: false
+appstream-compose: false
+separate-locales: false
 finish-args:
   - --socket=fallback-x11
   - --socket=wayland
@@ -31,6 +32,20 @@ modules:
       - generated-sources.json
       - type: dir
         path: ../..
+  - name: steamcompat
+    build-options:
+      env:
+        PREFIX: ${FLATPAK_DEST}
+    buildsystem: simple
+    build-commands:
+      - install -Dm644 -t ${FLATPAK_DEST}/share/steam/compatibilitytools.d/DeckCheatz ../Steam/compatibilitytool.vdf
+      - install -Dm644 -t ${FLATPAK_DEST} ../Steam/toolmanifest.vdf
+    sources:
+      - type: file
+        path: ../Steam/compatibilitytool.vdf
+      - type: file
+        path: ../Steam/toolmanifest.vdf
+
   - name: metadata
     buildsystem: simple
     build-commands:
