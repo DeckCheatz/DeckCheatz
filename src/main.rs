@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 use color_eyre::eyre::{Report, Result};
-use log::debug;
+use log::{debug, info};
 
 #[cfg(not(debug_assertions))]
 use std::io;
