@@ -1,6 +1,7 @@
 "manifest"
 {
   "version" "2"
-  "commandline" "/deckcheatz run %verb%"
+  "commandline" "/deckcheatz compat %verb%"
   "use_sessions" "1"
+  "use_tool_subprocess_reaper" "1"
 }

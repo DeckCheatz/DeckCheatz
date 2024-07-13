@@ -6,7 +6,7 @@
     {
       "install_path" "."
       "display_name" "DeckCheatz"
-      "from_oslist"  "linux"
+      "from_oslist"  "windows"
       "to_oslist"    "linux"
     }
   }
