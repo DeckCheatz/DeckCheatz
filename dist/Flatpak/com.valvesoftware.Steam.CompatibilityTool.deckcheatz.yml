@@ -1,0 +1,58 @@
+# SPDX-FileCopyrightText: 2024 The DeckCheatz Developers
+#
+# SPDX-License-Identifier: Apache-2.0
+
+id: com.valvesoftware.Steam.CompatibilityTool.deckcheatz
+default-branch: stable
+sdk: org.freedesktop.Sdk//23.08
+runtime: com.valvesoftware.Steam
+runtime-version: stable
+build-extension: true
+appstream-compose: false
+separate-locales: false
+sdk-extensions:
+  - org.freedesktop.Sdk.Extension.rust-stable
+finish-args:
+  - --socket=fallback-x11
+  - --socket=wayland
+build-options:
+  prefix: /app/utils/deckcheatz
+  prepend-path: /app/utils/deckcheatz/bin
+  strip: true
+  append-path: /usr/lib/sdk/rust-stable/bin
+  env:
+    CARGO_HOME: /run/build/rust-flatpak/cargo
+modules:
+  - name: rust-flatpak
+    build-options:
+      env:
+        PREFIX: ${FLATPAK_DEST}
+    buildsystem: simple
+    build-commands:
+      - cargo --offline fetch --manifest-path Cargo.toml --verbose # FIXME: Turn on release?
+      - cargo --offline build --verbose # FIXME: Turn on release?
+      - install -Dm755 -t ${FLATPAK_DEST}/bin ./target/debug/deckcheatz
+    sources:
+      - generated-sources.json
+      - type: dir
+        path: ../..
+  - name: steamcompat
+    buildsystem: simple
+    build-commands:
+      - install -Dm644 -t ${FLATPAK_DEST} compatibilitytool.vdf
+      - install -Dm644 -t ${FLATPAK_DEST} toolmanifest.vdf
+      - install -Dm644 -t ${FLATPAK_DEST}/share/steam/compatibilitytools.d/DeckCheatz compatibilitytool.vdf
+      - install -Dm644 -t ${FLATPAK_DEST} toolmanifest.vdf
+    sources:
+      - type: file
+        path: ./Steam/toolmanifest.vdf
+      - type: file
+        path: ./Steam/compatibilitytool.vdf
+  - name: meta
+    buildsystem: simple
+    build-commands:
+      - install -Dm644 -t ${FLATPAK_DEST}/share/metainfo ${FLATPAK_ID}.metainfo.xml
+      - appstream-compose --basename=${FLATPAK_ID} --prefix=${FLATPAK_DEST} --origin=flatpak ${FLATPAK_ID}
+    sources:
+      - type: file
+        path: com.valvesoftware.Steam.CompatibilityTool.deckcheatz.metainfo.xml

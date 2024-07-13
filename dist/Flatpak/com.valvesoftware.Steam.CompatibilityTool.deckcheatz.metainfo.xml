@@ -1,0 +1,39 @@
+<!-- SPDX-FileCopyrightText: 2024 The DeckCheatz Developers
+      SPDX-License-Identifier: Apache-2.0
+-->
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop-application">
+  <id>com.valvesoftware.Steam.CompatibilityTool.deckcheatz</id>
+  <extends>com.valvesoftware.Steam</extends>
+  <metadata_license>CC0</metadata_license>
+  <project_license>Apache-2.0</project_license>
+  <name>DeckCheatz</name>
+  <summary>DeckCheatz is a wrapper for the Steam Compatibility Tool that makes it easier to use.</summary>
+  <description>
+    <p>DeckCheatz is a wrapper for the Steam Compatibility Tool that makes it easier to use.</p>
+  </description>
+  <categories>
+      <category>Game</category>
+      <category>Trainers</category>
+      <category>Steam</category>
+  </categories>
+  <url type="homepage">https://DeckCheatz.github.io/DeckCheatz</url>
+  <url type="bugtracker">https://github.com/DeckCheatz/DeckCheatz/issues</url>
+  <developer id="com.github.shymega">
+    <name>Dom Rodriguez (shymega)</name>
+  </developer>
+  <url type="homepage">https://DeckCheatz.github.io/DeckCheatz</url>
+  <content_rating type="oars-1.0" />
+  <releases>
+    <release version="0.1.0" date="2024-07-13">
+      <description>
+        <p>First release of DeckCheatz.</p>
+      </description>
+    </release>
+  </releases>
+  <developer_name>Dom Rodriguez (shymega)</developer_name>
+  <update_contact>shymega+deckcheatz@shymega.org.uk</update_contact>
+  <launchable type="desktop-id">com.valvesoftware.Steam.CompatibilityTool.deckcheatz.desktop</launchable>
+</component>
+
+

@@ -4,14 +4,10 @@
 use color_eyre::eyre::{Report, Result};
 use log::{debug, info};
 
-#[cfg(not(debug_assertions))]
-use std::io;
-
-#[cfg(debug_assertions)]
-use std::env;
+use env_logger::{Builder as EnvLoggerBuilder, Env};
 
 fn init_app() -> Result<()> {
-    env_logger::init(); // Initialize logger.
+    EnvLoggerBuilder::from_env(Env::default().default_filter_or("info")).init();
     debug!("Logger initialized.");
 
     color_eyre::install()?; // Initialize error handling.
@@ -30,18 +26,10 @@ async fn main() -> Result<(), Report> {
     // Logging initialized.
     // Error handling initialised.
 
-    #[cfg(not(debug_assertions))]
-    return Err(io::Error::new(
-        io::ErrorKind::Other,
-        "This program is a WIP!",
-    ))?;
-
-    #[cfg(debug_assertions)]
-    {
-        // Output Steam environment variables.
-        for (k, v) in env::vars() {
-            info!("Steam environment variable found: {k}={v}")
-        }
-        return Ok(());
+    // Output Steam environment variables.
+    use std::env;
+    for (k, v) in env::vars() {
+        info!("Steam environment variable found: {k}={v}")
     }
+    return Ok(());
 }
