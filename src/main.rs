@@ -7,6 +7,9 @@ use log::debug;
 #[cfg(not(debug_assertions))]
 use std::io;
 
+#[cfg(debug_assertions)]
+use std::env;
+
 fn init_app() -> Result<()> {
     env_logger::init(); // Initialize logger.
     debug!("Logger initialized.");
@@ -34,5 +37,11 @@ async fn main() -> Result<(), Report> {
     ))?;
 
     #[cfg(debug_assertions)]
-    return Ok(());
+    {
+        // Output Steam environment variables.
+        for (k, v) in env::vars() {
+            info!("Steam environment variable found: {k}={v}")
+        }
+        return Ok(());
+    }
 }
