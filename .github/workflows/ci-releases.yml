@@ -25,7 +25,7 @@ jobs:
       == 'success' }}
     steps:
       - name: Checkout sources
-        uses: actions/checkout@v4.1.4
+        uses: actions/checkout@v4.1.7
 
       - name: Create release
         uses: taiki-e/create-gh-release-action@v1
@@ -40,7 +40,7 @@ jobs:
       == 'success' }}
     steps:
       - name: Checkout sources
-        uses: actions/checkout@v4.1.4
+        uses: actions/checkout@v4.1.7
       - name: Cache Rust assets
         id: rust-cache
         uses: Swatinem/rust-cache@v2

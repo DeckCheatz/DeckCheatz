@@ -12,7 +12,7 @@ jobs:
     name: Test the PR's commit message for compliance with Conventional Commits.
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4.1.4
+      - uses: actions/checkout@v4.1.7
       - uses: webiny/action-conventional-commits@v1.3.0
         with:
             GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

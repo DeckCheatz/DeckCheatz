@@ -20,7 +20,7 @@ jobs:
     outputs:
       should_run: ${{ steps.should_run.outputs.should_run }}
     steps:
-      - uses: actions/checkout@v4.1.4
+      - uses: actions/checkout@v4.1.7
         with:
           fetch-depth: 0
 
@@ -38,7 +38,7 @@ jobs:
     if: ${{ needs.check_date.outputs.should_run }}
     steps:
       - name: Checkout sources
-        uses: actions/checkout@v4.1.4
+        uses: actions/checkout@v4.1.7
       - name: Cache Rust assets
         id: rust-cache
         uses: Swatinem/rust-cache@v2
