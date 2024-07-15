@@ -17,7 +17,7 @@ jobs:
       - run: |
           git config --global user.email "github-actions+deckcheatz@noreply.github.com"
           git config --global user.name "GitHub Actions [Deckcheatz]"
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4.1.7
         with:
           submodules: true
       - uses: actions/setup-python@v5

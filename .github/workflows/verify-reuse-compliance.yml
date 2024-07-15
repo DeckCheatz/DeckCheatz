@@ -13,5 +13,5 @@ jobs:
     name: Test the commit for REUSE Compliance.
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4.1.4
+      - uses: actions/checkout@v4.1.7
       - uses: fsfe/reuse-action@v4
