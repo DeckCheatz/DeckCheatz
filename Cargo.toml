@@ -12,7 +12,7 @@ categories = ["games"]
 description = "Portable, Flatpak-ready, game trainer interface for Steam Deck and other Linux systems."
 
 [features]
-default = ["wemod"]
+default = ["wemod", "app-ui"]
 plitch = ["proton-deps"]
 generic-trainer = ["proton-deps"]
 steam-launch = ["steam-deps"]
