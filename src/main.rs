@@ -2,25 +2,23 @@
 // SPDX-License-Identifier: Apache-2.0
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")] // hide console window on Windows in release
 
-use color_eyre::eyre::{Report, Result};
 use eframe::egui;
 use log::{debug, info};
 
 use env_logger::{Builder as EnvLoggerBuilder, Env};
 
+type Result<T> = std::result::Result<T, Box<dyn std::error::Error>>;
+
 fn init_app() -> Result<()> {
     EnvLoggerBuilder::from_env(Env::default().default_filter_or("info")).init();
     debug!("Logger initialized.");
-
-    color_eyre::install()?; // Initialize error handling.
-    debug!("Error handling initialized.");
 
     debug!("Base app initialized.");
     Ok(())
 }
 
 #[tokio::main]
-async fn main() -> Result<(), Report> {
+async fn main() -> Result<()> {
     // Tokio should be active.
     // Init base app.
     init_app()?;
