@@ -3,6 +3,7 @@
 , fetchFromGitHub
 , pkg-config
 , expat
+, openssl
 , fontconfig
 , freetype
 , libGL
@@ -24,7 +25,7 @@ rustPlatform.buildRustPackage {
     lockFile = "${src}/Cargo.lock";
   };
 
-  nativeBuildInputs = [ pkg-config ];
+  nativeBuildInputs = [ pkg-config openssl.dev ];
 
   buildInputs = [
     expat
@@ -32,6 +33,7 @@ rustPlatform.buildRustPackage {
     freetype
     libGL
     libxkbcommon
+    openssl.dev
     pipewire
     rustPlatform.bindgenHook
     wayland

@@ -4,16 +4,73 @@
 
 use eframe::egui;
 use log::{debug, info};
+use std::env;
+use std::path::PathBuf;
+use std::process::Command;
+use wincompatlib::prelude::*;
 
 use env_logger::{Builder as EnvLoggerBuilder, Env};
 
 type Result<T> = std::result::Result<T, Box<dyn std::error::Error>>;
+
+const CUSTOM_PROTON: (&str, &str) = ("GE-Proton9-1", "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/GE-Proton9-1/GE-Proton9-1.tar.gz");
 
 fn init_app() -> Result<()> {
     EnvLoggerBuilder::from_env(Env::default().default_filter_or("info")).init();
     debug!("Logger initialized.");
 
     debug!("Base app initialized.");
+    Ok(())
+}
+
+fn get_test_dir() -> PathBuf {
+    env::temp_dir().join("deckcheatz-test")
+}
+
+fn get_prefix_dir() -> PathBuf {
+    get_test_dir().join("proton-prefix")
+}
+
+fn get_proton() -> Proton {
+    let test_dir = get_test_dir();
+
+    if !test_dir.exists() {
+        std::fs::create_dir_all(&test_dir)
+            .expect("Failed to create test directory");
+    }
+
+    let proton_dir = test_dir.join(CUSTOM_PROTON.0);
+
+    if !proton_dir.exists() {
+        Command::new("curl")
+            .arg("-L")
+            .arg("-s")
+            .arg(CUSTOM_PROTON.1)
+            .arg("-o")
+            .arg(test_dir.join("proton.tar.gz"))
+            .output()
+            .expect("Failed to download proton. Curl is not available?");
+
+        Command::new("tar")
+            .arg("-xf")
+            .arg("proton.tar.gz")
+            .current_dir(test_dir)
+            .output()
+            .expect("Failed to extract downloaded proton. Tar is not available?");
+    }
+
+    Proton::new(proton_dir, None)
+        .with_prefix(get_prefix_dir())
+}
+
+fn create_prefix() -> Result<()> {
+    let proton = get_proton();
+    let wine_prefix = proton.wine()
+        .to_owned()
+        .prefix;
+
+    proton.update_prefix(None::<&str>)?;
+
     Ok(())
 }
 
@@ -26,13 +83,12 @@ async fn main() -> Result<()> {
     // Logging initialized.
     // Error handling initialised.
 
-    // Output Steam environment variables.
-    use std::env;
-    for (k, v) in env::vars() {
-        if k.starts_with("STEAM") {
-            info!("Steam environment variable found: {k}={v}")
-        }
-    }
+    _ = create_prefix()?;
+    let proton = get_proton();
+
+    proton.wine().run("cmd.exe")?;
+
+    let current_proton = PathBuf::from(r"/data/Games/Steam/SteamLibrary/steamapps/common/Proton 8.0/");
 
     let options = eframe::NativeOptions {
         viewport: egui::ViewportBuilder::default().with_inner_size([320.0, 240.0]),
