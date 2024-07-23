@@ -8,5 +8,5 @@ pre-build = [
   "DEBIAN_FRONTEND=noninteractive TZ=Europe/London apt-get update --assume-yes",
   "DEBIAN_FRONTEND=noninteractive TZ=Europe/London apt-get upgrade --assume-yes",
   "DEBIAN_FRONTEND=noninteractive TZ=Europe/London apt-get dist-upgrade --assume-yes",
-  "DEBIAN_FRONTEND=noninteractive TZ=Europe/London apt-get install --assume-yes libxcb-render0-dev:amd64 libxcb-shape0-dev:amd64 libxcb-xfixes0-dev:amd64 libxkbcommon-dev:amd64 libssl-dev:amd64"
+  "DEBIAN_FRONTEND=noninteractive TZ=Europe/London apt-get install --assume-yes libxcb-render0-dev:amd64 libxcb-shape0-dev:amd64 libxcb-xfixes0-dev:amd64 libxkbcommon-dev:amd64 libssl-dev:amd64 pkg-config:amd64"
 ]
