@@ -25,7 +25,9 @@ rustPlatform.buildRustPackage {
     lockFile = "${src}/Cargo.lock";
   };
 
-  nativeBuildInputs = [ pkg-config openssl.dev ];
+  nativeBuildInputs = [ pkg-config ];
+  OPENSSL_NO_VENDOR = 1;
+  PKG_CONFIG_PATH = "${openssl.dev}/lib/pkgconfig";
 
   buildInputs = [
     expat
