@@ -39,6 +39,5 @@ steamlocate = { version = "1.2.1", features = ["steamid_ng"], optional = true }
 steamworks = { version = "0.11.0", features = ["serde"], optional = true }
 wincompatlib = { version = "0.7.4", features = ["wine-proton", "wine-bundles", "wine-fonts", "winetricks"], optional = true }
 
-[target.x86_64-unknown-musl.dependencies]
 openssl = { version = "0.10", features = ["vendored"] }
 
