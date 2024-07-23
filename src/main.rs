@@ -13,6 +13,8 @@ use env_logger::{Builder as EnvLoggerBuilder, Env};
 
 type Result<T> = std::result::Result<T, Box<dyn std::error::Error>>;
 
+const CUSTOM_PROTON: (&str, &str) = ("GE-Proton9-1", "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/GE-Proton9-1/GE-Proton9-1.tar.gz");
+
 fn init_app() -> Result<()> {
     EnvLoggerBuilder::from_env(Env::default().default_filter_or("info")).init();
     debug!("Logger initialized.");
@@ -22,11 +24,12 @@ fn init_app() -> Result<()> {
 }
 
 fn get_proton() -> Result<Proton> {
-    let prefix_dir = PathBuf::from(env::var("STEAM_COMPAT_DATA_PATH").unwrap())
-    let proton_dir =
-        canonicalize(&PathBuf::from("/home/dzrodriguez/data/Steam/compatibilitytools.d/GE-Proton9-1"))?;
+    let prefix_dir = PathBuf::from(env::var("STEAM_COMPAT_DATA_PATH")?);
+    let proton_dir = canonicalize(&PathBuf::from(
+        "~/.local/share/Steam/compatibilitytools.d/GE-Proton9-1",
+    ))?;
 
-    let proton = Proton::new(proton_dir, None).with_prefix(get_prefix_dir())?;
+    let proton = Proton::new(proton_dir, None).with_prefix(prefix_dir);
     proton.update_prefix(None::<&str>)?;
 
     Ok(proton)
@@ -41,7 +44,7 @@ async fn main() -> Result<()> {
     // Logging initialized.
     // Error handling initialised.
 
-    let proton = get_proton();
+    let proton = get_proton()?;
     proton.wine().run("cmd")?;
 
     let options = eframe::NativeOptions {

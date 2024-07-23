@@ -50,7 +50,6 @@
     };
     shellcheck.enable = true;
     shfmt.enable = true;
-    actionlint.enable = true;
     nixpkgs-fmt.enable = true;
     markdownlint.enable = true;
     statix.enable = true;

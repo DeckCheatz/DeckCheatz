@@ -67,7 +67,7 @@ jobs:
       - name: Zip up the artifacts
         id: zipup
         if: ${{ steps.build.outcome == 'success' }}
-        run: zip ${{ github.workspace }}/deckcheatz-nightly-x86_64-unknown-linux-musl.zip ${{ github.workspace }}/target/x86_64-unknown-linux-musl/debug/stoybox
+        run: zip ${{ github.workspace }}/deckcheatz-nightly-x86_64-unknown-linux-musl.zip ${{ github.workspace }}/target/x86_64-unknown-linux-musl/debug/deckcheatz
       - name: Create nightly release
         continue-on-error: true
         if: ${{ steps.zipup.outcome == 'success' }}
