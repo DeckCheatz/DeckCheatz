@@ -3,7 +3,7 @@
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")] // hide console window on Windows in release
 
 use eframe::egui;
-use log::{debug, info};
+use log::debug;
 use std::env;
 use std::path::PathBuf;
 use std::process::Command;
@@ -63,7 +63,6 @@ fn get_proton() -> Proton {
 
 fn create_prefix() -> Result<()> {
     let proton = get_proton();
-    let wine_prefix = proton.wine().to_owned().prefix;
 
     proton.update_prefix(None::<&str>)?;
 
@@ -83,9 +82,6 @@ async fn main() -> Result<()> {
     let proton = get_proton();
 
     proton.wine().run("cmd.exe")?;
-
-    let current_proton =
-        PathBuf::from(r"/data/Games/Steam/SteamLibrary/steamapps/common/Proton 8.0/");
 
     let options = eframe::NativeOptions {
         viewport: egui::ViewportBuilder::default().with_inner_size([320.0, 240.0]),
