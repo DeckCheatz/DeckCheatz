@@ -13,6 +13,8 @@ use env_logger::{Builder as EnvLoggerBuilder, Env};
 
 type Result<T> = std::result::Result<T, Box<dyn std::error::Error>>;
 
+const CUSTOM_PROTON: (&str, &str) = ("GE-Proton9-1", "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/GE-Proton9-1/GE-Proton9-1.tar.gz");
+
 fn init_app() -> Result<()> {
     EnvLoggerBuilder::from_env(Env::default().default_filter_or("info")).init();
     debug!("Logger initialized.");
