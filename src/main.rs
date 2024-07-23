@@ -35,8 +35,7 @@ fn get_proton() -> Proton {
     let test_dir = get_test_dir();
 
     if !test_dir.exists() {
-        std::fs::create_dir_all(&test_dir)
-            .expect("Failed to create test directory");
+        std::fs::create_dir_all(&test_dir).expect("Failed to create test directory");
     }
 
     let proton_dir = test_dir.join(CUSTOM_PROTON.0);
@@ -59,15 +58,12 @@ fn get_proton() -> Proton {
             .expect("Failed to extract downloaded proton. Tar is not available?");
     }
 
-    Proton::new(proton_dir, None)
-        .with_prefix(get_prefix_dir())
+    Proton::new(proton_dir, None).with_prefix(get_prefix_dir())
 }
 
 fn create_prefix() -> Result<()> {
     let proton = get_proton();
-    let wine_prefix = proton.wine()
-        .to_owned()
-        .prefix;
+    let wine_prefix = proton.wine().to_owned().prefix;
 
     proton.update_prefix(None::<&str>)?;
 
@@ -88,7 +84,8 @@ async fn main() -> Result<()> {
 
     proton.wine().run("cmd.exe")?;
 
-    let current_proton = PathBuf::from(r"/data/Games/Steam/SteamLibrary/steamapps/common/Proton 8.0/");
+    let current_proton =
+        PathBuf::from(r"/data/Games/Steam/SteamLibrary/steamapps/common/Proton 8.0/");
 
     let options = eframe::NativeOptions {
         viewport: egui::ViewportBuilder::default().with_inner_size([320.0, 240.0]),
