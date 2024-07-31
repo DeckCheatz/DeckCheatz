@@ -5,15 +5,13 @@
 use eframe::egui;
 use log::debug;
 use std::env;
+use std::fs::canonicalize;
 use std::path::PathBuf;
-use std::process::Command;
 use wincompatlib::prelude::*;
 
 use env_logger::{Builder as EnvLoggerBuilder, Env};
 
 type Result<T> = std::result::Result<T, Box<dyn std::error::Error>>;
-
-const CUSTOM_PROTON: (&str, &str) = ("GE-Proton9-1", "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/GE-Proton9-1/GE-Proton9-1.tar.gz");
 
 fn init_app() -> Result<()> {
     EnvLoggerBuilder::from_env(Env::default().default_filter_or("info")).init();
@@ -23,50 +21,15 @@ fn init_app() -> Result<()> {
     Ok(())
 }
 
-fn get_test_dir() -> PathBuf {
-    env::temp_dir().join("deckcheatz-test")
-}
+fn get_proton() -> Result<Proton> {
+    let prefix_dir = PathBuf::from(env::var("STEAM_COMPAT_DATA_PATH").unwrap())
+    let proton_dir =
+        canonicalize(&PathBuf::from("/home/dzrodriguez/data/Steam/compatibilitytools.d/GE-Proton9-1"))?;
 
-fn get_prefix_dir() -> PathBuf {
-    get_test_dir().join("proton-prefix")
-}
-
-fn get_proton() -> Proton {
-    let test_dir = get_test_dir();
-
-    if !test_dir.exists() {
-        std::fs::create_dir_all(&test_dir).expect("Failed to create test directory");
-    }
-
-    let proton_dir = test_dir.join(CUSTOM_PROTON.0);
-
-    if !proton_dir.exists() {
-        Command::new("curl")
-            .arg("-L")
-            .arg("-s")
-            .arg(CUSTOM_PROTON.1)
-            .arg("-o")
-            .arg(test_dir.join("proton.tar.gz"))
-            .output()
-            .expect("Failed to download proton. Curl is not available?");
-
-        Command::new("tar")
-            .arg("-xf")
-            .arg("proton.tar.gz")
-            .current_dir(test_dir)
-            .output()
-            .expect("Failed to extract downloaded proton. Tar is not available?");
-    }
-
-    Proton::new(proton_dir, None).with_prefix(get_prefix_dir())
-}
-
-fn create_prefix() -> Result<()> {
-    let proton = get_proton();
-
+    let proton = Proton::new(proton_dir, None).with_prefix(get_prefix_dir())?;
     proton.update_prefix(None::<&str>)?;
 
-    Ok(())
+    Ok(proton)
 }
 
 #[tokio::main]
@@ -78,10 +41,8 @@ async fn main() -> Result<()> {
     // Logging initialized.
     // Error handling initialised.
 
-    _ = create_prefix()?;
     let proton = get_proton();
-
-    proton.wine().run("cmd.exe")?;
+    proton.wine().run("cmd")?;
 
     let options = eframe::NativeOptions {
         viewport: egui::ViewportBuilder::default().with_inner_size([320.0, 240.0]),
