@@ -20,32 +20,39 @@
 
   outputs =
     { self
+    , nixpkgs
+    , flake-utils
+    , devenv
     , ...
     }@inputs:
-    inputs.flake-utils.lib.eachSystem [ "x86_64-linux" ]
+    flake-utils.lib.eachDefaultSystem
       (system:
       let
-        supportedSystems = [ "x86_64-linux" ];
-        forAllSystems = inputs.nixpkgs.lib.genAttrs supportedSystems;
-        pkgs = import inputs.nixpkgs { inherit system; config = { allowUnsupportedSystem = true; }; };
+        pkgs = nixpkgs.outputs.legacyPackages.${system};
+        devenvShell = devenv.lib.mkShell {
+          inherit inputs pkgs;
+          modules = [
+            ({ inputs, pkgs, ... }: {
+              imports = [ ./devenv.nix ];
+            })
+          ];
+        };
+
       in
       {
-        packages.deckcheatz = pkgs.pkgsStatic.callPackage ./build-aux/nix/deckcheatz.nix { };
+        packages.deckcheatz = pkgs.callPackage ./build-aux/nix/deckcheatz.nix { };
         packages.default = self.outputs.packages.${system}.deckcheatz;
+        # use flake-parts
         devShells.default = pkgs.buildFHSUserEnv {
-          name = "deckcheatz-dev";
-          inputsFrom = inputs.devenv.lib.mkShell {
-            inherit inputs system pkgs;
-            modules = [
-              ({ inputs, pkgs, ... }: {
-                imports = [ ./devenv.nix ];
-              })
-            ];
-          };
-
+          name = "wincompatlib-dev";
+          inputsFrom = devenvShell;
           targetPkgs = pkgs: with pkgs; [
             bun
+            # Needed for fonts installation
             cabextract
+            cmake
+            gcc
+            pkg-config
             cairo
             cargo
             cargo-tauri
