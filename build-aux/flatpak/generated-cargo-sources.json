@@ -3265,9 +3265,9 @@
     {
         "type": "archive",
         "archive-type": "tar-gzip",
-        "url": "https://static.crates.io/crates/mio/mio-0.8.11.crate",
-        "sha256": "a4a650543ca06a924e8b371db273b2756685faae30f8487da1b56505a8f78b0c",
-        "dest": "cargo/vendor/mio-0.8.11"
+        "url": "https://static.crates.io/crates/mio/mio-1.0.1.crate",
+        "sha256": "4569e456d394deccd22ce1c1913e6ea0e54519f577285001215d33557431afe4",
+        "dest": "cargo/vendor/mio-1.0.1"
     },
     {
         "type": "inline",
@@ -3884,6 +3884,19 @@
         "type": "inline",
         "contents": "{\"package\": \"490d3a563d3122bf7c911a59b0add9389e5ec0f5f0c3ac6b91ff235a0e6a7f90\", \"files\": {}}",
         "dest": "cargo/vendor/owned_ttf_parser-0.24.0",
+        "dest-filename": ".cargo-checksum.json"
+    },
+    {
+        "type": "archive",
+        "archive-type": "tar-gzip",
+        "url": "https://static.crates.io/crates/owo-colors/owo-colors-4.0.0.crate",
+        "sha256": "caff54706df99d2a78a5a4e3455ff45448d81ef1bb63c22cd14052ca0e993a3f",
+        "dest": "cargo/vendor/owo-colors-4.0.0"
+    },
+    {
+        "type": "inline",
+        "contents": "{\"package\": \"caff54706df99d2a78a5a4e3455ff45448d81ef1bb63c22cd14052ca0e993a3f\", \"files\": {}}",
+        "dest": "cargo/vendor/owo-colors-4.0.0",
         "dest-filename": ".cargo-checksum.json"
     },
     {
