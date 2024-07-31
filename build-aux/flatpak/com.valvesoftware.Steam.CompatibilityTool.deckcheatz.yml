@@ -14,35 +14,28 @@ finish-args:
   - '--device=dri'
   - '--share=ipc'
 build-options:
-  prepend-path: 'usr/lib/sdk/node20/bin:/usr/lib/sdk/rust-stable/bin:/app/share/steam/compatibilitytools.d/DeckCheatz/bin'
-  prefix: '/app/share/steam/compatibilitytools.d/DeckCheatz/'
-  prepend-pkg-config-path: '/app/share/steam/compatibilitytools.d/DeckCheatz/lib/pkgconfig'
-  prepend-ld-library-path: '/app/share/steam/compatibilitytools.d/DeckCheatz/lib/'
+  prepend-path: 'usr/lib/sdk/node20/bin:/usr/lib/sdk/rust-stable/bin'
+  prefix: '/app/share/steam/compatibilitytools.d/DeckCheatz'
   strip: true
 modules:
   - name: deckcheatz
     buildsystem: simple
     build-options:
-      prefix: '/app/share/steam/compatibilitytools.d/deckcheatz/'
       env:
         CARGO_HOME: '/run/build/deckcheatz/cargo'
         CARGO_NET_OFFLINE: 'true'
     build-commands:
       - 'cargo --offline --frozen fetch --verbose'
       - 'cargo --offline --frozen build --release --verbose'
-      - 'install -Dm755 -t ${FLATPAK_DEST}/bin target/release/deckcheatz'
+      - 'install -Dm755 -t ${FLATPAK_DEST} target/release/deckcheatz'
     sources:
       - type: dir
         path: ../../.
       - generated-cargo-sources.json
   - name: steamcompat
-    build-options:
-      prefix: /app/share/steam/compatibilitytools.d/deckcheatz/
     buildsystem: simple
     build-commands:
       - 'install -Dm644 -t ${FLATPAK_DEST} compatibilitytool.vdf'
-      - 'install -Dm644 -t ${FLATPAK_DEST} toolmanifest.vdf'
-      - 'install -Dm644 -t ${FLATPAK_DEST}/app/share/steam/compatibilitytools.d/DeckCheatz compatibilitytool.vdf'
       - 'install -Dm644 -t ${FLATPAK_DEST} toolmanifest.vdf'
     sources:
       - type: file
