@@ -29,18 +29,48 @@
       (system:
       let
         pkgs = nixpkgs.outputs.legacyPackages.${system};
-      in
-      {
-        packages.deckcheatz = pkgs.callPackage ./build-aux/nix/deckcheatz.nix { };
-        packages.default = self.outputs.packages.${system}.deckcheatz;
-        # use flake-parts
-        devShells.${system} = devenv.lib.mkShell {
+        devenvShell = devenv.lib.mkShell {
           inherit inputs pkgs;
           modules = [
             ({ inputs, pkgs, ... }: {
               imports = [ ./devenv.nix ];
             })
           ];
+        };
+
+      in
+      {
+        packages.deckcheatz = pkgs.callPackage ./build-aux/nix/deckcheatz.nix { };
+        packages.default = self.outputs.packages.${system}.deckcheatz;
+        # use flake-parts
+        devShells.default = pkgs.buildFHSUserEnv {
+          name = "wincompatlib-dev";
+          inputsFrom = devenvShell;
+          targetPkgs = pkgs: with pkgs; [
+            bun
+            # Needed for fonts installation
+            cabextract
+            cmake
+            gcc
+            pkg-config
+            cairo
+            cargo
+            cargo-tauri
+            clippy
+            cmake
+            gcc
+            git
+            glibc
+            gtk3
+            openssl
+            pkg-config
+            python3Packages.aiohttp
+            python3Packages.pipx
+            python3Packages.toml
+            rustc
+            rustfmt
+            rustup
+          ] ++ [ self.packages.${system}.deckcheatz ];
         };
       }) // {
       overlays.default = final: prev: {

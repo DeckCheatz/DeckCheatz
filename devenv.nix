@@ -6,26 +6,24 @@
 
 {
   packages = with pkgs; [
+    bun
+    cairo
+    cargo
+    cargo-tauri
+    clippy
+    cmake
+    gcc
     git
-
+    glibc
+    gtk3
+    openssl
+    pkg-config
     python3Packages.aiohttp
     python3Packages.pipx
     python3Packages.toml
-
-    pkg-config
-    cargo
     rustc
-    cargo-tauri
-    nodejs-slim
-    openssl
-    bun
-    openssl
-    glibc
-    libsoup_3
-    libsoup
-    cairo
-    gtk3
-    webkitgtk
+    rustfmt
+    rustup
   ];
 
   languages = {
