@@ -44,15 +44,11 @@
         packages.default = self.outputs.packages.${system}.deckcheatz;
         # use flake-parts
         devShells.default = pkgs.buildFHSUserEnv {
-          name = "wincompatlib-dev";
+          name = "deckcheatz-dev";
           inputsFrom = devenvShell;
           targetPkgs = pkgs: with pkgs; [
             bun
-            # Needed for fonts installation
             cabextract
-            cmake
-            gcc
-            pkg-config
             cairo
             cargo
             cargo-tauri
