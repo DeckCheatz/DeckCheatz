@@ -18,13 +18,13 @@ proton-deps = ["ge-man", "proton-call"]
 wemod = ["proton-deps"]
 
 [dependencies]
-clap = { version = "4.5.11", features = ["env", "derive", "unicode", "string"] }
+clap = { version = "4.5.13", features = ["env", "derive", "unicode", "string"] }
 color-eyre = { version = "0.6.3", features = ["issue-url"] }
 eframe = "0.28.1"
 env_logger = "0.11.5"
 log = "0.4.22"
 serde = { version = "1.0.204", features = ["derive"] }
-serde_json = "1.0.121"
+serde_json = "1.0.122"
 thiserror = "1.0.63"
 tokio = { version = "1.39.2", features = ["full"] }
 
