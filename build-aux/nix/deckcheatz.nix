@@ -1,13 +1,12 @@
 { lib
 , rustPlatform
-, fetchFromGitHub
 , pkg-config
 , expat
+, openssl
 , fontconfig
 , freetype
 , libGL
 , libxkbcommon
-, pipewire
 , wayland
 , xorg
 }:
@@ -25,6 +24,8 @@ rustPlatform.buildRustPackage {
   };
 
   nativeBuildInputs = [ pkg-config ];
+  OPENSSL_NO_VENDOR = 1;
+  PKG_CONFIG_PATH = "${openssl.dev}/lib/pkgconfig";
 
   buildInputs = [
     expat
@@ -32,7 +33,7 @@ rustPlatform.buildRustPackage {
     freetype
     libGL
     libxkbcommon
-    pipewire
+    openssl.dev
     rustPlatform.bindgenHook
     wayland
     xorg.libX11

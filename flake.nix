@@ -20,27 +20,50 @@
 
   outputs =
     { self
-    , nixpkgs
-    , flake-utils
-    , devenv
     , ...
     }@inputs:
-    flake-utils.lib.eachDefaultSystem
+    inputs.flake-utils.lib.eachSystem [ "x86_64-linux" ]
       (system:
       let
-        pkgs = nixpkgs.outputs.legacyPackages.${system};
+        supportedSystems = [ "x86_64-linux" ];
+        forAllSystems = inputs.nixpkgs.lib.genAttrs supportedSystems;
+        pkgs = import inputs.nixpkgs { inherit system; config = { allowUnsupportedSystem = true; }; };
       in
       {
-        packages.deckcheatz = pkgs.callPackage ./build-aux/nix/deckcheatz.nix { };
+        packages.deckcheatz = pkgs.pkgsStatic.callPackage ./build-aux/nix/deckcheatz.nix { };
         packages.default = self.outputs.packages.${system}.deckcheatz;
-        # use flake-parts
-        devShells.${system} = devenv.lib.mkShell {
-          inherit inputs pkgs;
-          modules = [
-            ({ inputs, pkgs, ... }: {
-              imports = [ ./devenv.nix ];
-            })
-          ];
+        devShells.default = pkgs.buildFHSUserEnv {
+          name = "deckcheatz-dev";
+          inputsFrom = inputs.devenv.lib.mkShell {
+            inherit inputs system pkgs;
+            modules = [
+              ({ inputs, pkgs, ... }: {
+                imports = [ ./devenv.nix ];
+              })
+            ];
+          };
+
+          targetPkgs = pkgs: with pkgs; [
+            bun
+            cabextract
+            cairo
+            cargo
+            cargo-tauri
+            clippy
+            cmake
+            gcc
+            git
+            glibc
+            gtk3
+            openssl
+            pkg-config
+            python3Packages.aiohttp
+            python3Packages.pipx
+            python3Packages.toml
+            rustc
+            rustfmt
+            rustup
+          ] ++ [ self.packages.${system}.deckcheatz ];
         };
       }) // {
       overlays.default = final: prev: {
