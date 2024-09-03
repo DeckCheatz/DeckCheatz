@@ -11,6 +11,14 @@
       url = "github:edolstra/flake-compat";
       flake = false;
     };
+    treefmt-nix.url = "github:numtide/treefmt-nix";
+
+    git-hooks = {
+      url = "github:cachix/git-hooks.nix";
+      inputs = {
+        nixpkgs.follows = "nixpkgs";
+      };
+    };
   };
 
   nixConfig = {
@@ -20,55 +28,88 @@
 
   outputs =
     { self
-    , nixpkgs
-    , flake-utils
-    , devenv
     , ...
     }@inputs:
-    flake-utils.lib.eachDefaultSystem
-      (system:
-      let
-        pkgs = nixpkgs.outputs.legacyPackages.${system};
-        devenvShell = devenv.lib.mkShell {
-          inherit inputs pkgs;
-          modules = [
-            ({ inputs, pkgs, ... }: {
-              imports = [ ./devenv.nix ];
-            })
-          ];
+    let
+      inherit (inputs) self;
+      genPkgs =
+        system:
+        import inputs.nixpkgs {
+          inherit system;
         };
 
-      in
-      {
-        packages.deckcheatz = pkgs.callPackage ./build-aux/nix/deckcheatz.nix { };
-        packages.default = self.outputs.packages.${system}.deckcheatz;
-        # use flake-parts
-        devShells.default = pkgs.buildFHSUserEnv {
-          name = "deckcheatz-dev";
-          inputsFrom = devenvShell;
-          targetPkgs = pkgs: with pkgs; [
-            bun
-            cabextract
-            cairo
-            cargo
-            cargo-tauri
-            clippy
-            cmake
-            gcc
-            git
-            glibc
-            gtk3
-            openssl
-            pkg-config
-            python3Packages.aiohttp
-            python3Packages.pipx
-            python3Packages.toml
-            rustc
-            rustfmt
-            rustup
-          ] ++ [ self.packages.${system}.deckcheatz ];
-        };
-      }) // {
+      systems = [
+        "x86_64-linux"
+        "aarch64-linux"
+      ];
+      treeFmtEachSystem = f: inputs.nixpkgs.lib.genAttrs systems (system: f inputs.nixpkgs.legacyPackages.${system});
+      treeFmtEval = treeFmtEachSystem (pkgs: inputs.treefmt-nix.lib.evalModule pkgs ./build-aux/nix/formatter.nix);
+
+      forEachSystem = inputs.nixpkgs.lib.genAttrs systems;
+    in
+    {
+      packages = forEachSystem (system:
+        let
+          pkgs = genPkgs system;
+        in
+        rec {
+          deckcheatz = pkgs.callPackage ./build-aux/nix/deckcheatz.nix { };
+          default = deckcheatz;
+        });
+
+      # for `nix fmt`
+      formatter = treeFmtEachSystem (pkgs: treeFmtEval.${pkgs.system}.config.build.wrapper);
+      # for `nix flake check`
+
+      checks =
+        treeFmtEachSystem
+          (pkgs: {
+            formatting = treeFmtEval.${pkgs.system}.config.build.wrapper;
+          })
+        // forEachSystem (system: {
+          pre-commit-check = import ./build-aux/nix/checks.nix {
+            inherit
+              self
+              system
+              inputs;
+            inherit (inputs.nixpkgs) lib;
+          };
+        });
+
+      # use flake-parts
+      devShells = forEachSystem
+        (system:
+          let
+            pkgs = genPkgs system;
+          in
+          {
+            default = pkgs.buildFHSUserEnv
+              {
+                name = "deckcheatz-dev";
+                targetPkgs = pkgs: with pkgs; [
+                  bun
+                  cairo
+                  cargo
+                  cargo-tauri
+                  clippy
+                  cmake
+                  gcc
+                  git
+                  glibc
+                  gtk3
+                  openssl
+                  pkg-config
+                  python3Packages.aiohttp
+                  python3Packages.pipx
+                  python3Packages.toml
+                  rustc
+                  rustfmt
+                  rustup
+                ] ++ [ self.packages.${system}.deckcheatz ];
+              };
+          }
+        );
+    } // {
       overlays.default = final: prev: {
         inherit (self.packages.${final.system}) deckcheatz;
       };
