@@ -26,7 +26,7 @@ jobs:
 
       - uses: docker://ghcr.io/flathub/flatpak-external-data-checker:latest
         with:
-          args: --edit-only ${{ env.FLATPAK_ID }}.yml
+          args: --edit-only ./build-aux/flatpak/${{ env.FLATPAK_ID }}.yml
 
       - name: Check updated
         id: is-updated
@@ -49,4 +49,4 @@ jobs:
           EMAIL: ${{ env.GIT_USER_EMAIL }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          args: --update --never-fork ${{ env.FLATPAK_ID }}.yml
+          args: --update --never-fork ./build-aux/flatpak/${{ env.FLATPAK_ID }}.yml
