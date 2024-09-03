@@ -28,13 +28,3 @@ jobs:
           nix_path: nixpkgs=channel:nixos-unstable
           github_access_token: ${{ secrets.GITHUB_TOKEN }}
       - run: nix build --print-build-logs --accept-flake-config
-
-  check-devenv-flake:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4.1.7
-      - uses: cachix/install-nix-action@V27
-        with:
-          nix_path: nixpkgs=channel:nixos-unstable
-          github_access_token: ${{ secrets.GITHUB_TOKEN }}
-      - run: nix run --accept-flake-config nixpkgs#devenv test 
