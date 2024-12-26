@@ -52,9 +52,9 @@
         let
           pkgs = genPkgs system;
         in
-        rec {
-          deckcheatz = pkgs.callPackage ./build-aux/nix/deckcheatz.nix { };
-          default = deckcheatz;
+        {
+          deckcheatz = pkgs.callPackage ./build-aux/nix { };
+          default = self.packages.${system}.deckcheatz;
         });
 
       # for `nix fmt`
