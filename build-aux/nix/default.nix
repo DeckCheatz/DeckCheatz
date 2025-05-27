@@ -10,12 +10,13 @@
 , pipewire
 , wayland
 , xorg
+, self
 }:
 let
   pname = "deckcheatz";
   version = "unstable";
 
-  src = lib.cleanSource ../../.;
+  src = lib.cleanSource self;
 in
 rustPlatform.buildRustPackage {
   inherit version src pname;

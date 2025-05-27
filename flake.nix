@@ -31,7 +31,6 @@
     , ...
     }@inputs:
     let
-      inherit (inputs) self;
       genPkgs =
         system:
         import inputs.nixpkgs {
@@ -53,7 +52,7 @@
           pkgs = genPkgs system;
         in
         {
-          deckcheatz = pkgs.callPackage ./build-aux/nix { };
+          deckcheatz = pkgs.callPackage ./build-aux/nix { inherit self; };
           default = self.packages.${system}.deckcheatz;
         });
 
