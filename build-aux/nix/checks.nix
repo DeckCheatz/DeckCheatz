@@ -1,4 +1,4 @@
-# SPDX-FileCopyrightText: 2024 Dom Rodriguez <shymega@shymega.org.uk
+# SPDX-FileCopyrightText: 2024 The DeckCheatz Developers
 #
 # SPDX-License-Identifier: GPL-3.0-only
 

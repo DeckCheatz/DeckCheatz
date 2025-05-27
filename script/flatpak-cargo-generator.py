@@ -1,5 +1,9 @@
 #!/usr/bin/env python3
 
+# SPDX-FileCopyrightText: 2025 Various Authors (Flatpak/Flathub)
+#
+# SPDX-License-Identifier: MIT
+
 __license__ = 'MIT'
 import json
 from urllib.parse import urlparse, ParseResult, parse_qs
