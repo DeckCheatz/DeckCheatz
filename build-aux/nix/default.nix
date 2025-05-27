@@ -24,6 +24,26 @@ rustPlatform.buildRustPackage {
     lockFile = "${src}/Cargo.lock";
   };
 
+  dontFixup = true;
+
+  outputs = [
+    "out"
+    "steamcompattool"
+  ];
+
+  installPhase = ''
+    runHook preInstall
+
+    # Make it impossible to add to an environment. You should use the appropriate NixOS option.
+    # Also leave some breadcrumbs in the file.
+    echo "${pname} should not be installed into environments. Please use programs.steam.extraCompatPackages instead." > $out
+
+    install -Dt $steamcompattool build-aux/steam/compatibilitytool.vdf build-aux/steam/toolmanifest.vdf
+    install -Dt $steamcompattool -m755 target/*/release/deckcheatz
+
+    runHook postInstall
+  '';
+
   nativeBuildInputs = [ pkg-config ];
   OPENSSL_NO_VENDOR = 1;
   PKG_CONFIG_PATH = "${openssl.dev}/lib/pkgconfig";
