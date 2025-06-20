@@ -28,10 +28,10 @@ jobs:
         with:
           packages: cross
       - name: Run tests
-        run: cargo cross test --target=x86_64-unknown-linux-musl
+        run: cross test --target=x86_64-unknown-linux-musl
       - name: Run Cargo checks
-        run: cargo cross check --target=x86_64-unknown-linux-musl
+        run: cross check --target=x86_64-unknown-linux-musl
       - name: Run Clippy tests
-        run: cargo cross clippy --target=x86_64-unknown-linux-musl
+        run: cross clippy --target=x86_64-unknown-linux-musl
       - name: Run formatting checks
         run: cargo fmt -- --check

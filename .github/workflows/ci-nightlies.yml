@@ -47,7 +47,7 @@ jobs:
           packages: cross
       - name: Build for x86_64-unknown-linux-musl
         id: build
-        run: cargo cross build --all --locked --verbose --target=x86_64-unknown-linux-musl
+        run: cross build --all --locked --verbose --target=x86_64-unknown-linux-musl
       - name: Zip up the artifacts
         id: zipup
         if: ${{ steps.build.outcome == 'success' }}
