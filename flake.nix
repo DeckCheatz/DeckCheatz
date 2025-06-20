@@ -1,7 +1,6 @@
 # SPDX-FileCopyrightText: 2024-2025 The DeckCheatz Developers
 #
 # SPDX-License-Identifier: Apache-2.0
-
 {
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.05";
@@ -18,32 +17,28 @@
     };
   };
 
-  outputs = inputs:
-    let
-      inherit (inputs) self;
-      genPkgs =
-        system:
-        import inputs.nixpkgs {
-          inherit system;
-        };
+  outputs = inputs: let
+    inherit (inputs) self;
+    genPkgs = system:
+      import inputs.nixpkgs {
+        inherit system;
+      };
 
-      systems = [
-        "x86_64-linux"
-      ];
-      treeFmtEachSystem = f: inputs.nixpkgs.lib.genAttrs systems (system: f inputs.nixpkgs.legacyPackages.${system});
-      treeFmtEval = treeFmtEachSystem (pkgs: inputs.treefmt-nix.lib.evalModule pkgs ./build-aux/nix/formatter.nix);
+    systems = [
+      "x86_64-linux"
+    ];
+    treeFmtEachSystem = f: inputs.nixpkgs.lib.genAttrs systems (system: f inputs.nixpkgs.legacyPackages.${system});
+    treeFmtEval = treeFmtEachSystem (pkgs: inputs.treefmt-nix.lib.evalModule pkgs ./build-aux/nix/formatter.nix);
 
-      forEachSystem = inputs.nixpkgs.lib.genAttrs systems;
-    in
+    forEachSystem = inputs.nixpkgs.lib.genAttrs systems;
+  in
     {
-      packages = forEachSystem (system:
-        let
-          pkgs = genPkgs system;
-        in
-        {
-          deckcheatz = pkgs.callPackage ./build-aux/nix { inherit self; };
-          default = self.packages.${system}.deckcheatz;
-        });
+      packages = forEachSystem (system: let
+        pkgs = genPkgs system;
+      in {
+        deckcheatz = pkgs.callPackage ./build-aux/nix {inherit self;};
+        default = self.packages.${system}.deckcheatz;
+      });
 
       # for `nix fmt`
       formatter = treeFmtEachSystem (pkgs: treeFmtEval.${pkgs.system}.config.build.wrapper);
@@ -51,54 +46,60 @@
       # for `nix flake check`
       checks =
         treeFmtEachSystem
-          (pkgs: {
-            formatting = treeFmtEval.${pkgs.system}.config.build.wrapper;
-          })
+        (pkgs: {
+          formatting = treeFmtEval.${pkgs.system}.config.build.wrapper;
+        })
         // forEachSystem (system: {
           pre-commit-check = import ./build-aux/nix/checks.nix {
             inherit
               self
               system
-              inputs;
+              inputs
+              ;
             inherit (inputs.nixpkgs) lib;
           };
         });
 
       # use flake-parts
-      devShells = forEachSystem
-        (system:
-          let
+      devShells =
+        forEachSystem
+        (
+          system: let
             pkgs = genPkgs system;
-          in
-          {
-            default = pkgs.buildFHSEnv
+          in {
+            default =
+              pkgs.buildFHSEnv
               {
                 name = "deckcheatz-dev";
-                targetPkgs = pkgs: with pkgs; [
-                  bun
-                  cairo
-                  cargo
-                  cargo-tauri
-                  clippy
-                  cmake
-                  gcc
-                  git
-                  glibc
-                  gtk3
-                  openssl
-                  pkg-config
-                  python3Packages.aiohttp
-                  python3Packages.pipx
-                  python3Packages.toml
-                  rustc
-                  rustfmt
-                  rustup
-                ] ++ [ self.packages.${system}.deckcheatz ];
+                targetPkgs = pkgs:
+                  with pkgs;
+                    [
+                      bun
+                      cairo
+                      cargo
+                      cargo-tauri
+                      clippy
+                      cmake
+                      gcc
+                      git
+                      glibc
+                      gtk3
+                      openssl
+                      pkg-config
+                      python3Packages.aiohttp
+                      python3Packages.pipx
+                      python3Packages.toml
+                      rustc
+                      rustfmt
+                      rustup
+                    ]
+                    ++ [self.packages.${system}.deckcheatz];
               };
           }
         );
-    } // {
-      overlays.default = final: prev: let
+    }
+    // {
+      overlays.default = final: _prev: let
         inherit (final) system;
       in {
         inherit (self.packages) system;

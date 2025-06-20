@@ -1,12 +1,9 @@
 # SPDX-FileCopyrightText: 2024-2025 The DeckCheatz Developers
 #
 # SPDX-License-Identifier: Apache-2.0
-
 name: Conventional Commits Verification Workflow
-
 on:
   pull_request:
-
 jobs:
   test-pr-commit-msg:
     name: Test the PR's commit message for compliance with Conventional Commits.
@@ -15,4 +12,4 @@ jobs:
       - uses: actions/checkout@v4.1.7
       - uses: webiny/action-conventional-commits@v1.3.0
         with:
-            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

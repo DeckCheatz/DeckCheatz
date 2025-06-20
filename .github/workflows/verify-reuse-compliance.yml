@@ -1,13 +1,10 @@
 # SPDX-FileCopyrightText: 2024-2025 The DeckCheatz Developers
 #
 # SPDX-License-Identifier: Apache-2.0
-
 name: REUSE Compliance workflow
-
 on:
   workflow_dispatch:
   pull_request:
-
 jobs:
   test-reuse-compliance:
     name: Test the commit for REUSE Compliance.

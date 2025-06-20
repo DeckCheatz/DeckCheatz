@@ -1,15 +1,11 @@
 # SPDX-FileCopyrightText: 2024-2025 The DeckCheatz Developers
 #
 # SPDX-License-Identifier: Apache-2.0
-
----
 name: Update Flatpak Cargo lockfile
-
 on:
   push:
     paths: ["Cargo.lock"]
   workflow_dispatch:
-
 jobs:
   update-flatpak-cargo-data:
     runs-on: ubuntu-latest

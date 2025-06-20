@@ -1,9 +1,7 @@
 # SPDX-FileCopyrightText: 2024-2025 The DeckCheatz Developers
 #
 # SPDX-License-Identifier: Apache-2.0
-
-{ pkgs, ... }:
-{
+{pkgs, ...}: {
   package = pkgs.treefmt;
   projectRootFile = "flake.nix";
 

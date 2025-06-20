@@ -1,10 +1,7 @@
 # SPDX-FileCopyrightText: 2024-2025 The DeckCheatz Developers
 #
 # SPDX-License-Identifier: Apache-2.0
-
----
 name: CI Tests
-
 on:
   push:
     paths: ["src/**", "Cargo.toml", "Cargo.lock", "rust-toolchain.toml", "*.nix"]
@@ -13,16 +10,13 @@ on:
     workflows: ["Update Flatpak Cargo lockfile"]
     types:
       - completed
-
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref_name }}
   cancel-in-progress: true
-
 jobs:
   test-linux:
     uses: ./.github/workflows/ci-tests-linux.yml
     secrets: inherit
-
   test-nix-pm:
     uses: ./.github/workflows/ci-tests-nix.yml
     secrets: inherit

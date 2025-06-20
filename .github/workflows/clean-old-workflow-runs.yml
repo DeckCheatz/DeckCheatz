@@ -1,17 +1,13 @@
 # SPDX-FileCopyrightText: 2024-2025 The DeckCheatz Developers
 #
 # SPDX-License-Identifier: Apache-2.0
-
 name: Clean up old & skipped workflow runs
-
 on:
   workflow_dispatch:
   schedule:
-    - cron: '0 0 * * 1'
-
+    - cron: "0 0 * * 1"
 permissions:
-    actions: write
-
+  actions: write
 jobs:
   clean-old-runs:
     runs-on: ubuntu-latest
@@ -24,9 +20,9 @@ jobs:
   clean-skipped-runs:
     runs-on: ubuntu-latest
     steps:
-        - name: Clean skipped workflow runs
-          uses: Mattraks/delete-workflow-runs@v2
-          with:
-              delete_run_by_conclusion_pattern: "skipped"
-              retain_days: 1
-              keep_minimum_runs: 1
+      - name: Clean skipped workflow runs
+        uses: Mattraks/delete-workflow-runs@v2
+        with:
+          delete_run_by_conclusion_pattern: "skipped"
+          retain_days: 1
+          keep_minimum_runs: 1

@@ -1,7 +1,6 @@
 # SPDX-FileCopyrightText: 2024-2025 The DeckCheatz Developers
 #
 # SPDX-License-Identifier: Apache-2.0
-
 name: "Build and push artifacts to Cachix"
 on:
   push:
@@ -25,6 +24,6 @@ jobs:
         if: false
         with:
           name: deckcheatz
-          authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
+          authToken: "${{ secrets.CACHIX_AUTH_TOKEN }}"
       - run: nix build --override-input nixpkgs github:NixOS/nixpkgs/release-24.05 github:srid/devour-flake -L --no-link --print-out-paths --override-input flake path:"$GITHUB_WORKSPACE"
       - run: nix-shell -p bash --run "echo OK"
