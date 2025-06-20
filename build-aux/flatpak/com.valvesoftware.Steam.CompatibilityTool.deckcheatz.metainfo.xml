@@ -6,7 +6,7 @@
   <id>com.valvesoftware.Steam.CompatibilityTool.deckcheatz</id>
   <extends>com.valvesoftware.Steam</extends>
   <metadata_license>CC0</metadata_license>
-  <project_license>Apache-2.0</project_license>
+  <project_license>AGPL-3.0-only</project_license>
   <name>DeckCheatz</name>
   <summary>DeckCheatz is a wrapper for the Steam Compatibility Tool that makes it easier to use.</summary>
   <description>
