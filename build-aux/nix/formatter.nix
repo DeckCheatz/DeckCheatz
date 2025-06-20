@@ -22,7 +22,7 @@
   programs = {
     deadnix.enable = true;
     statix.enable = true;
-    nixpkgs-fmt.enable = true;
+    alejandra.enable = true;
     prettier.enable = true;
     yamlfmt.enable = true;
     jsonfmt.enable = true;

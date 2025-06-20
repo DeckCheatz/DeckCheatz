@@ -13,7 +13,7 @@ inputs.git-hooks.lib.${system}.run {
     deadnix.enable = true;
     statix.enable = true;
     statix.settings.ignore = [ "flake.nix" "builddir" ".flatpak-builder" ];
-    nixpkgs-fmt.enable = true;
+    alejandra.enable = true;
     prettier.enable = true;
     yamlfmt.enable = true;
     actionlint.enable = true;
