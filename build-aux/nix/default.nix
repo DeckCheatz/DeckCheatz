@@ -76,7 +76,7 @@ in
     meta = with lib; {
       description = "";
       homepage = "https://deckcheatz.github.io";
-      license = licenses.apl3Only;
+      license = licenses.agpl3Only;
       maintainers = with maintainers; [shymega];
       mainProgram = "deckcheatz";
     };
