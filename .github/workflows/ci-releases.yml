@@ -48,7 +48,7 @@ jobs:
       - name: Build & upload DeckCheatz on GH Releases
         uses: taiki-e/upload-rust-binary-action@v1
         with:
-          bin: stoybox
+          bin: deckcheatz
           target: x86_64-unknown-linux-musl
           token: ${{ secrets.GITHUB_TOKEN }}
           archive: deckcheatz-${{ github.ref_name }}-release-x86_64-unknown-linux-musl
