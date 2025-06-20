@@ -57,7 +57,7 @@ jobs:
   upload-nix-derivation:
     needs: [create-gh-release]
     name: Upload Nix to Cachix
-    if: ${{ startsWith(github.ref, 'refs/tags/') && github.event.workflow_run.conclusion
+    if: ${{ startsWith(github.ref, 'refs/tags/') && github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
