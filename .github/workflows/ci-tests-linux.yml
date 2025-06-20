@@ -24,9 +24,9 @@ jobs:
           target: x86_64-unknown-linux-musl
       - name: Install Cross
         if: ${{ steps.rust-cache.outputs.cache-hit == 'false' }}
-        uses: brndnmtthws/rust-action-cargo-binstall@v1.1.0
+        uses: taiki-e/install-action@v2
         with:
-          packages: cross
+          tool: cross
       - name: Run tests
         run: $HOME/.cargo/bin/cross test --target=x86_64-unknown-linux-musl
       - name: Run Cargo checks

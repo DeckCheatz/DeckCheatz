@@ -42,9 +42,9 @@ jobs:
           target: x86_64-unknown-linux-musl
       - name: Install Cross
         if: ${{ steps.rust-cache.outputs.cache-hit == 'false' }}
-        uses: brndnmtthws/rust-action-cargo-binstall@v1.1.0
+        uses: taiki-e/install-action@v2
         with:
-          packages: cross
+          tool: cross
       - name: Build & upload DeckCheatz on GH Releases
         uses: taiki-e/upload-rust-binary-action@v1
         with:
