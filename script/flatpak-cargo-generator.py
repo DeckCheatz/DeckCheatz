@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-# SPDX-FileCopyrightText: 2025 Various Authors (Flatpak/Flathub)
+# SPDX-FileCopyrightText: (UNKNOWN YEAR) Various Authors (Flatpak/Flathub)
 #
 # SPDX-License-Identifier: MIT
 

@@ -1,5 +1,5 @@
-// SPDX-FileCopyrightText: 2024 The DeckCheatz Developers
-// SPDX-License-Identifier: Apache-2.0
+// SPDX-FileCopyrightText: 2024-2025 The DeckCheatz Developers
+// SPDX-License-Identifier: AGPL-3.0-only
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")] // hide console window on Windows in release
 
 use eframe::egui;
