@@ -99,10 +99,9 @@
         );
     }
     // {
-      overlays.default = final: _prev: let
-        inherit (final) system;
-      in {
-        inherit (self.packages) system;
+      overlays.default = final: prev: 
+      {
+        inherit (self.packages.${final.system}) deckcheatz;
       };
     };
 }
