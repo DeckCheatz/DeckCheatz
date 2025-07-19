@@ -1,0 +1,27 @@
+# SPDX-FileCopyrightText: 2024-2025 The DeckCheatz Developers
+#
+# SPDX-License-Identifier: Apache-2.0
+pull_request_rules:
+  - name: Automatic merge for Dependabot pull requests or Flake updates
+    conditions:
+      - or:
+          - author=github-actions[bot]
+          - author=dependabot[bot]
+      - base=main
+      - check-success = CI Tests
+    actions:
+      queue:
+        method: merge
+        priority: high
+  - name: Automatic update to the main branch for pull requests
+    conditions:
+      - -conflict # skip PRs with conflicts
+      - -draft # skip GH draft PRs
+      - -author=dependabot[bot] # skip dependabot PRs
+    actions:
+      update:
+  - name: Delete head branch on merged pull requests
+    conditions:
+      - merged
+    actions:
+      delete_head_branch:
