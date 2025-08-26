@@ -26,9 +26,9 @@ wemod = ["proton-deps", "steam-deps"]
 steamlocate = ["dep:steamlocate"]
 
 [dependencies]
-clap = { version = "4.5.45", features = ["env", "derive", "unicode", "string"] }
+clap = { version = "4.5.46", features = ["env", "derive", "unicode", "string"] }
 eframe = { version = "0.32.1", optional = true }
-env_logger = "0.11.6"
+env_logger = "0.11.8"
 log = "0.4.27"
 miette = { version = "7.6.0", features = ["fancy"] }
 serde = { version = "1.0.219", features = ["derive"] }
