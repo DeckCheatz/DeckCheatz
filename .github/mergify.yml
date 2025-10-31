@@ -2,26 +2,40 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 pull_request_rules:
-  - name: Automatic merge for Dependabot pull requests or Flake updates
+  - name: Automatic merge for Dependabot pull requests when its reviewed.
     conditions:
-      - or:
-          - author=github-actions[bot]
-          - author=dependabot[bot]
-      - base=main
-      - check-success = CI Tests
+      - author=dependabot[bot]
+      - label != do-not-merge
+      - "#approved-reviews-by >= 1"
+      - -conflict
+      - -draft
+      - check-success = Build site
     actions:
       queue:
-        method: merge
-        priority: high
-  - name: Automatic update to the main branch for pull requests
+  - name: Automatically approve Dependabot PRs
     conditions:
-      - -conflict # skip PRs with conflicts
-      - -draft # skip GH draft PRs
-      - -author=dependabot[bot] # skip dependabot PRs
+      - author = dependabot[bot]
+      - dependabot-update-type = version-update:semver-minor
+      - check-success = Build site
     actions:
-      update:
+      review:
+        type: APPROVE
   - name: Delete head branch on merged pull requests
     conditions:
       - merged
     actions:
       delete_head_branch:
+  - name: Automatic merge when reviews approve, unless 'do-not-merge' label is present
+    conditions:
+      - "#approved-reviews-by >= 1"
+      - label != do-not-merge
+      - head = main 
+      - check-success = Build site
+    actions:
+      queue:
+  - name: Warn maintainers not to merge manually.
+    conditions:
+      - -closed
+    actions:
+      comment:
+        message: "Note to maintainers: do not merge using the GitHub UI. We handle it differently here ;-)"
