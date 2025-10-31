@@ -3,7 +3,7 @@
 # SPDX-License-Identifier: Apache-2.0
 {
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.05";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
     flake-compat = {
       url = "github:edolstra/flake-compat";
       flake = false;
@@ -19,25 +19,21 @@
 
   outputs = inputs: let
     inherit (inputs) self;
-    genPkgs = system:
-      import inputs.nixpkgs {
-        inherit system;
-      };
-
-    systems = [
-      "x86_64-linux"
-    ];
     treeFmtEachSystem = f: inputs.nixpkgs.lib.genAttrs systems (system: f inputs.nixpkgs.legacyPackages.${system});
     treeFmtEval = treeFmtEachSystem (pkgs: inputs.treefmt-nix.lib.evalModule pkgs ./build-aux/nix/formatter.nix);
-
-    forEachSystem = inputs.nixpkgs.lib.genAttrs systems;
+    forEachSystem = let
+      supportedSystems = [
+        "x86_64-linux"
+      ];
+      genPkgs = system: inputs.nixpkgs.legacyPackages.${system};
+      inherit (inputs.nixpkgs.lib) genAttrs;
+    in
+      f: genAttrs supportedSystems (system: f genPkgs system);
   in
     {
-      packages = forEachSystem (system: let
-        pkgs = genPkgs system;
-      in {
+      packages = forEachSystem (pkgs: {
         deckcheatz = pkgs.callPackage ./build-aux/nix {inherit self;};
-        default = self.packages.${system}.deckcheatz;
+        default = self.packages.${pkgs.system}.deckcheatz;
       });
 
       # for `nix fmt`
@@ -49,14 +45,13 @@
         (pkgs: {
           formatting = treeFmtEval.${pkgs.system}.config.build.wrapper;
         })
-        // forEachSystem (system: {
+        // forEachSystem (pkgs: {
           pre-commit-check = import ./build-aux/nix/checks.nix {
             inherit
               self
-              system
               inputs
               ;
-            inherit (inputs.nixpkgs) lib;
+            inherit (pkgs) lib system;
           };
         });
 
@@ -64,9 +59,7 @@
       devShells =
         forEachSystem
         (
-          system: let
-            pkgs = genPkgs system;
-          in {
+          pkgs: {
             default =
               pkgs.buildFHSEnv
               {
@@ -93,14 +86,13 @@
                       rustfmt
                       rustup
                     ]
-                    ++ [self.packages.${system}.deckcheatz];
+                    ++ [self.packages.${pkgs.system}.deckcheatz];
               };
           }
         );
     }
     // {
-      overlays.default = final: prev: 
-      {
+      overlays.default = final: _: {
         inherit (self.packages.${final.system}) deckcheatz;
       };
     };
