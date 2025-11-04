@@ -19,16 +19,16 @@
 
   outputs = inputs: let
     inherit (inputs) self;
+    systems = [
+        "x86_64-linux"
+    ];
     treeFmtEachSystem = f: inputs.nixpkgs.lib.genAttrs systems (system: f inputs.nixpkgs.legacyPackages.${system});
     treeFmtEval = treeFmtEachSystem (pkgs: inputs.treefmt-nix.lib.evalModule pkgs ./build-aux/nix/formatter.nix);
     forEachSystem = let
-      supportedSystems = [
-        "x86_64-linux"
-      ];
       genPkgs = system: inputs.nixpkgs.legacyPackages.${system};
       inherit (inputs.nixpkgs.lib) genAttrs;
     in
-      f: genAttrs supportedSystems (system: f genPkgs system);
+      f: genAttrs systems (system: f genPkgs system);
   in
     {
       packages = forEachSystem (pkgs: {
