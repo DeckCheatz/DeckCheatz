@@ -1,0 +1,19 @@
+# SPDX-FileCopyrightText: 2024-2025 The DeckCheatz Developers
+#
+# SPDX-License-Identifier: Apache-2.0
+
+[project]
+name = "libdeckcheatz"
+version = "0.1.0" # FIXME: Replace with `dynamic`.
+description = "Add your description here"
+readme = "README.md"
+license = "Apache-2.0"
+authors = [
+    { name = "Dom Rodriguez", email = "shymega@shymega.org.uk" }
+]
+requires-python = ">=3.13"
+dependencies = []
+
+[build-system]
+requires = ["uv_build>=0.9.17,<0.10.0"]
+build-backend = "uv_build"

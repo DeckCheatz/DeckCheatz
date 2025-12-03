@@ -1,0 +1,22 @@
+# SPDX-FileCopyrightText: 2024-2025 The DeckCheatz Developers
+#
+# SPDX-License-Identifier: AGPL-3.0-only
+
+[project]
+name = "deckcheatz"
+version = "0.1.0" # FIXME: Replace with `dynamic`.
+description = "Add your description here"
+readme = "README.md"
+license = "AGPL-3.0-only"
+authors = [
+    { name = "Dom Rodriguez", email = "shymega@shymega.org.uk" }
+]
+requires-python = ">=3.13"
+dependencies = []
+
+[project.scripts]
+deckcheatz = "deckcheatz:main"
+
+[build-system]
+requires = ["uv_build>=0.9.17,<0.10.0"]
+build-backend = "uv_build"

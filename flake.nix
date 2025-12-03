@@ -20,40 +20,36 @@
   outputs = inputs: let
     inherit (inputs) self;
     systems = [
-        "x86_64-linux"
+      "x86_64-linux"
     ];
-    treeFmtEachSystem = f: inputs.nixpkgs.lib.genAttrs systems (system: f inputs.nixpkgs.legacyPackages.${system});
-    treeFmtEval = treeFmtEachSystem (pkgs: inputs.treefmt-nix.lib.evalModule pkgs ./build-aux/nix/formatter.nix);
+    treeFmtEval = forEachSystem (pkgs: inputs.treefmt-nix.lib.evalModule pkgs ./build-aux/nix/formatter.nix);
     forEachSystem = let
       genPkgs = system: inputs.nixpkgs.legacyPackages.${system};
       inherit (inputs.nixpkgs.lib) genAttrs;
     in
-      f: genAttrs systems (system: f genPkgs system);
+      f: genAttrs systems (system: f (genPkgs system));
   in
     {
       packages = forEachSystem (pkgs: {
-        deckcheatz = pkgs.callPackage ./build-aux/nix {inherit self;};
-        default = self.packages.${pkgs.system}.deckcheatz;
+        deckcheatz = pkgs.callPackage ./build-aux/nix/deckcheatz.nix {inherit self;};
+        deckcheatz-shim = pkgs.callPackage ./build-aux/nix/deckcheatz-shim.nix {inherit self;};
+        default = self.packages.${pkgs.stdenv.hostPlatform.system}.deckcheatz;
       });
 
       # for `nix fmt`
-      formatter = treeFmtEachSystem (pkgs: treeFmtEval.${pkgs.system}.config.build.wrapper);
+      formatter = forEachSystem (pkgs: treeFmtEval.${pkgs.stdenv.hostPlatform.system}.config.build.wrapper);
 
       # for `nix flake check`
-      checks =
-        treeFmtEachSystem
-        (pkgs: {
-          formatting = treeFmtEval.${pkgs.system}.config.build.wrapper;
-        })
-        // forEachSystem (pkgs: {
-          pre-commit-check = import ./build-aux/nix/checks.nix {
-            inherit
-              self
-              inputs
-              ;
-            inherit (pkgs) lib system;
-          };
-        });
+      checks = forEachSystem (pkgs: {
+        pre-commit-check = import ./build-aux/nix/checks.nix {
+          inherit
+            self
+            inputs
+            ;
+          inherit (pkgs) lib system;
+        };
+        formatting = treeFmtEval.${pkgs.stdenv.hostPlatform.system}.config.build.wrapper;
+      });
 
       # use flake-parts
       devShells =
@@ -67,33 +63,19 @@
                 targetPkgs = pkgs:
                   with pkgs;
                     [
-                      bun
-                      cairo
-                      cargo
-                      cargo-tauri
-                      clippy
-                      cmake
-                      gcc
                       git
-                      glibc
-                      gtk3
-                      openssl
-                      pkg-config
-                      python3Packages.aiohttp
-                      python3Packages.pipx
-                      python3Packages.toml
-                      rustc
-                      rustfmt
-                      rustup
+                      python3
                     ]
-                    ++ [self.packages.${pkgs.system}.deckcheatz];
+                    ++ (with self.packages.${pkgs.stdenv.hostPlatform.system}; [
+                      deckcheatz
+                    ]);
               };
           }
         );
     }
     // {
       overlays.default = final: _: {
-        inherit (self.packages.${final.system}) deckcheatz;
+        inherit (self.packages.${final.stdenv.hostPlatform.system}) deckcheatz;
       };
     };
 }

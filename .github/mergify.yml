@@ -9,14 +9,12 @@ pull_request_rules:
       - "#approved-reviews-by >= 1"
       - -conflict
       - -draft
-      - check-success = Build site
     actions:
       queue:
   - name: Automatically approve Dependabot PRs
     conditions:
       - author = dependabot[bot]
       - dependabot-update-type = version-update:semver-minor
-      - check-success = Build site
     actions:
       review:
         type: APPROVE
@@ -30,7 +28,6 @@ pull_request_rules:
       - "#approved-reviews-by >= 1"
       - label != do-not-merge
       - head = main 
-      - check-success = Build site
     actions:
       queue:
   - name: Warn maintainers not to merge manually.
