@@ -29,7 +29,7 @@ steamlocate = ["dep:steamlocate"]
 clap = { version = "4.5.53", features = ["env", "derive", "unicode", "string"] }
 eframe = { version = "0.33.2", optional = true }
 env_logger = "0.11.8"
-log = "0.4.28"
+log = "0.4.29"
 miette = { version = "7.6.0", features = ["fancy"] }
 serde = { version = "1.0.228", features = ["derive"] }
 serde_json = "1.0.145"
