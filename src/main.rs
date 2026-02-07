@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2024-2025 The DeckCheatz Developers
+// SPDX-FileCopyrightText: 2024-2026 The DeckCheatz Developers
 // SPDX-License-Identifier: AGPL-3.0-only
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")] // hide console window on Windows in release
 
