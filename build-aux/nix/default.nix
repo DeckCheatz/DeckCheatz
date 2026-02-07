@@ -13,19 +13,19 @@
   libxkbcommon,
   pipewire,
   wayland,
-  xorg,
+  libX11,
+  libXcursor,
+  libXi,
+  libXrandr,
   self,
-}: let
-  pname = "deckcheatz";
-  version = "unstable";
+}: rustPlatform.buildRustPackage (finalAttrs: {
+    pname = "deckcheatz";
+    version = "unstable";
 
-  src = lib.cleanSource self;
-in
-  rustPlatform.buildRustPackage {
-    inherit version src pname;
+    src = lib.cleanSource self;
 
     cargoLock = {
-      lockFile = "${src}/Cargo.lock";
+      lockFile = "${finalAttrs.src}/Cargo.lock";
     };
 
     dontFixup = true;
@@ -40,10 +40,10 @@ in
 
       # Make it impossible to add to an environment. You should use the appropriate NixOS option.
       # Also leave some breadcrumbs in the file.
-      echo "${pname} should not be installed into environments. Please use programs.steam.extraCompatPackages instead." > $out
+      install -Dt $out/usr/bin target/*/release/deckcheatz
 
       install -Dt $steamcompattool build-aux/steam/compatibilitytool.vdf build-aux/steam/toolmanifest.vdf
-      install -Dt $steamcompattool -m755 target/*/release/deckcheatz
+      install -Dt $steamcompattool -m755 target/*/release/deckcheatz-shim
 
       runHook postInstall
     '';
@@ -62,22 +62,22 @@ in
       pipewire
       rustPlatform.bindgenHook
       wayland
-      xorg.libX11
-      xorg.libXcursor
-      xorg.libXi
-      xorg.libXrandr
+      libX11
+      libXcursor
+      libXi
+      libXrandr
     ];
 
     postFixup = ''
-      patchelf $out/bin/deckcheatz \
+      patchelf $out/usr/bin/deckcheatz \
         --add-rpath ${lib.makeLibraryPath [libGL libxkbcommon wayland]}
     '';
 
-    meta = with lib; {
+    meta = {
       description = "";
       homepage = "https://deckcheatz.github.io";
-      license = licenses.agpl3Only;
-      maintainers = with maintainers; [shymega];
+      license = lib.licenses.agpl3Only;
+      maintainers = with lib.maintainers; [shymega];
       mainProgram = "deckcheatz";
     };
-  }
+  })
