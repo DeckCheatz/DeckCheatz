@@ -20,7 +20,7 @@
   outputs = inputs: let
     inherit (inputs) self;
     systems = [
-        "x86_64-linux"
+      "x86_64-linux"
     ];
     treeFmtEachSystem = f: inputs.nixpkgs.lib.genAttrs systems (system: f inputs.nixpkgs.legacyPackages.${system});
     treeFmtEval = treeFmtEachSystem (pkgs: inputs.treefmt-nix.lib.evalModule pkgs ./build-aux/nix/formatter.nix);
@@ -31,10 +31,16 @@
       f: genAttrs systems (system: f (genPkgs system));
   in
     {
-      packages = forEachSystem (pkgs: {
-        deckcheatz = pkgs.callPackage ./build-aux/nix {inherit self;};
-        default = self.packages.${pkgs.stdenv.hostPlatform.system}.deckcheatz;
-      });
+      packages = let
+        getVersion = toml: (builtins.fromTOML (builtins.readFile toml))."package"."version";
+      in
+        forEachSystem (pkgs: {
+          deckcheatz = let
+            version = getVersion ./Cargo.toml;
+          in
+            pkgs.callPackage ./build-aux/nix {inherit self version;};
+          default = self.packages.${pkgs.stdenv.hostPlatform.system}.deckcheatz;
+        });
 
       # for `nix fmt`
       formatter = treeFmtEachSystem (pkgs: treeFmtEval.${pkgs.stdenv.hostPlatform.system}.config.build.wrapper);
