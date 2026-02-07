@@ -18,9 +18,11 @@
   rustPlatform,
   self,
   wayland,
+  version,
 }:
 rustPlatform.buildRustPackage (finalAttrs: {
   name = "deckcheatz";
+  inherit version;
 
   src = lib.cleanSource self;
 
@@ -40,10 +42,10 @@ rustPlatform.buildRustPackage (finalAttrs: {
 
     # Make it impossible to add to an environment. You should use the appropriate NixOS option.
     # Also leave some breadcrumbs in the file.
-    install -Dt $out/usr/bin target/*/release/deckcheatz
+    install -Dt $out/usr/bin -m755 target/*/release/deckcheatz
 
     install -Dt $steamcompattool build-aux/steam/compatibilitytool.vdf build-aux/steam/toolmanifest.vdf
-    install -Dt $steamcompattool -m755 target/*/release/deckcheatz-shim
+    # install -Dt $steamcompattool -m755 target/*/release/deckcheatz-shim
 
     runHook postInstall
   '';
