@@ -28,22 +28,22 @@
       genPkgs = system: inputs.nixpkgs.legacyPackages.${system};
       inherit (inputs.nixpkgs.lib) genAttrs;
     in
-      f: genAttrs systems (system: f genPkgs system);
+      f: genAttrs systems (system: f (genPkgs system));
   in
     {
       packages = forEachSystem (pkgs: {
         deckcheatz = pkgs.callPackage ./build-aux/nix {inherit self;};
-        default = self.packages.${pkgs.system}.deckcheatz;
+        default = self.packages.${pkgs.stdenv.hostPlatform.system}.deckcheatz;
       });
 
       # for `nix fmt`
-      formatter = treeFmtEachSystem (pkgs: treeFmtEval.${pkgs.system}.config.build.wrapper);
+      formatter = treeFmtEachSystem (pkgs: treeFmtEval.${pkgs.stdenv.hostPlatform.system}.config.build.wrapper);
 
       # for `nix flake check`
       checks =
         treeFmtEachSystem
         (pkgs: {
-          formatting = treeFmtEval.${pkgs.system}.config.build.wrapper;
+          formatting = treeFmtEval.${pkgs.stdenv.hostPlatform.system}.config.build.wrapper;
         })
         // forEachSystem (pkgs: {
           pre-commit-check = import ./build-aux/nix/checks.nix {
@@ -86,7 +86,7 @@
                       rustfmt
                       rustup
                     ]
-                    ++ [self.packages.${pkgs.system}.deckcheatz];
+                    ++ [self.packages.${pkgs.stdenv.hostPlatform.system}.deckcheatz];
               };
           }
         );
