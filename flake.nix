@@ -32,7 +32,7 @@
   in
     {
       packages = let
-        getVersion = toml: (builtins.fromTOML (builtins.readFile toml))."package"."version";
+        getVersion = toml: (builtins.fromTOML (builtins.readFile toml))."workspace"."package"."version";
       in
         forEachSystem (pkgs: {
           deckcheatz = let
