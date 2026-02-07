@@ -1,0 +1,16 @@
+# SPDX-FileCopyrightText: 2024-2025 The DeckCheatz Developers
+#
+# SPDX-License-Identifier: AGPL-3.0-only
+
+[package]
+authors.workspace = true
+categories.workspace = true
+description.workspace = true # FIXME: Replace with new description.
+edition.workspace = true
+homepage.workspace = true # FIXME: Replace with link to Sphinx docs.
+keywords.workspace = true
+license.workspace = true
+name = "deckcheatz-shim"
+readme.workspace = true
+repository.workspace = true
+version.workspace = true

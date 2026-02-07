@@ -2,7 +2,12 @@
 #
 # SPDX-License-Identifier: AGPL-3.0-only
 
-[package]
+[workspace]
+resolver = "2"
+members = ["crates/*"]
+default-members = ["crates/deckcheatz", "crates/deckcheatz-shim"]
+
+[workspace.package]
 name = "deckcheatz"
 license = "AGPL-3.0-only"
 version = "0.1.0"
@@ -11,26 +16,16 @@ readme = "README.md"
 repository = "https://github.com/DeckCheatz/DeckCheatz.git"
 homepage = "https://DeckCheatz.github.io"
 authors = ["Dom Rodriguez <shymega@shymega.org.uk>"]
-keywords = ["game-trainers", "gaming", "proton", "wine", "wemod", "plitch"]
+keywords = ["game-trainers", "gaming", "proton", "steam-deck"]
 categories = ["games"]
 description = "Portable, Flatpak-ready, game trainer interface for Steam Deck and other Linux systems."
 
-[features]
-default = []
-decky = []
-steam-deps = ["steamid-ng", "steamlocate", "steamworks"]
-
-[dependencies]
-clap = { version = "4.5.59", features = ["env", "derive", "unicode", "string"] }
-env_logger = "0.11.9"
+[workspace.dependencies]
+clap = { version = "4.5.57", features = ["env", "derive", "unicode", "string"] }
+env_logger = "0.11.8"
 log = "0.4.29"
 serde = { version = "1.0.228", features = ["derive"] }
-serde_json = "1.0.149"
 thiserror = "2.0.18"
 tokio = { version = "1.49.0", features = ["full"] }
 
-proton-call = { version = "3.1.2", optional = true }
 sqlx = { version = "0.8.6", default-features = false, features = ["sqlite"] }
-steamid-ng = { version = "3.0.0", optional = true }
-steamlocate = { version = "2.0.1", optional = true }
-steamworks = { version = "0.12.2", features = ["serde"], optional = true }
