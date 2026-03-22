@@ -99,8 +99,6 @@
         );
     }
     // {
-      overlays.default = final: _: {
-        inherit (self.packages.${final.system}) deckcheatz;
-      };
+      overlays.default = _: prev: self.packages.${prev.stdenv.hostPlatform.system};
     };
 }
