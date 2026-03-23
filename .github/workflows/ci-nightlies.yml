@@ -78,7 +78,7 @@ jobs:
       - uses: cachix/install-nix-action@v31
         with:
           nix_path: nixpkgs=channel:nixos-unstable
-      - uses: cachix/cachix-action@v16
+      - uses: cachix/cachix-action@v17
         with:
           name: deckcheatz-nightlies
           authToken: "${{ secrets.CACHIX_NIGHTLIES_AUTH_TOKEN }}"
