@@ -20,7 +20,7 @@ jobs:
           extra-conf: |
             extra-platforms = aarch64-linux
       - uses: DeterminateSystems/magic-nix-cache-action@main
-      - uses: cachix/cachix-action@v16
+      - uses: cachix/cachix-action@v17
         if: false
         with:
           name: deckcheatz
