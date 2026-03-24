@@ -57,7 +57,8 @@
               self
               inputs
               ;
-            inherit (pkgs) lib system;
+            inherit (pkgs) lib;
+            inherit (pkgs.stdenv.hostPlatform) system;
           };
         });
 
