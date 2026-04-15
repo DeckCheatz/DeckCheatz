@@ -27,7 +27,7 @@ log = "0.4.29"
 serde = { version = "1.0.228", features = ["derive"] }
 serde_json = "1.0.149"
 thiserror = "2.0.18"
-tokio = { version = "1.51.0", features = ["full"] }
+tokio = { version = "1.51.1", features = ["full"] }
 
 proton-call = { version = "3.1.2", optional = true }
 sqlx = { version = "0.8.6", default-features = false, features = ["sqlite"] }
