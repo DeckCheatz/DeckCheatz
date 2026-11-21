@@ -1,0 +1,15 @@
+# SPDX-FileCopyrightText: 2024-2025 The DeckCheatz Developers
+#
+# SPDX-License-Identifier: Apache-2.0
+name: Label pull requests
+on:
+  pull_request_target:
+permissions:
+  contents: read
+  pull-requests: write
+jobs:
+  labeler:
+    name: Apply labels based on changed files
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/labeler@v7

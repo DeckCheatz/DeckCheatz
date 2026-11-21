@@ -1,0 +1,25 @@
+# SPDX-FileCopyrightText: 2024-2025 The DeckCheatz Developers
+#
+# SPDX-License-Identifier: Apache-2.0
+rust:
+  - changed-files:
+      - any-glob-to-any-file:
+          - "src/**"
+          - "Cargo.toml"
+          - "Cargo.lock"
+          - "rust-toolchain.toml"
+github_actions:
+  - changed-files:
+      - any-glob-to-any-file:
+          - ".github/workflows/**"
+          - ".github/actions/**"
+nix:
+  - changed-files:
+      - any-glob-to-any-file:
+          - "**/*.nix"
+          - "flake.lock"
+documentation:
+  - changed-files:
+      - any-glob-to-any-file:
+          - "docs/**"
+          - "**/*.md"
