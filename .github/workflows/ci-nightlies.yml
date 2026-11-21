@@ -31,20 +31,11 @@ jobs:
     steps:
       - name: Checkout sources
         uses: actions/checkout@v7
-      - name: Cache Rust assets
-        id: rust-cache
-        uses: Swatinem/rust-cache@v2
-      - name: Configure Rust
-        if: ${{ steps.rust-cache.outputs.cache-hit == 'false' }}
-        uses: dtolnay/rust-toolchain@stable
+      - name: Setup Rust and cross
+        uses: ./.github/actions/setup-rust-cross
         with:
+          target: x86_64-unknown-linux-musl
           components: llvm-tools-preview
-          targets: x86_64-unknown-linux-musl
-      - name: Install Cross
-        if: ${{ steps.rust-cache.outputs.cache-hit == 'false' }}
-        uses: taiki-e/install-action@v2.90.3
-        with:
-          tool: cross
       - name: Build for x86_64-unknown-linux-musl
         id: build
         run: $HOME/.cargo/bin/cross build --all --locked --verbose --target=x86_64-unknown-linux-musl
@@ -71,7 +62,7 @@ jobs:
   upload-nix-derivation:
     name: Upload Nix to Cachix
     needs: check_date
-    if: ${{ needs.check_date.outputs.should_run }}
+    if: false # Disabled pending a Nix/Cachix overhaul.
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
