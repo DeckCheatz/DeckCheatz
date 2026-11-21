@@ -9,17 +9,42 @@ pull_request_rules:
       - "#approved-reviews-by >= 1"
       - -conflict
       - -draft
-      - check-success = Build site
+      - "check-success=Test the PR's commit message for compliance with Conventional Commits."
+      - "check-success=Test the commit for REUSE Compliance."
     actions:
       queue:
   - name: Automatically approve Dependabot PRs
     conditions:
       - author = dependabot[bot]
       - dependabot-update-type = version-update:semver-minor
-      - check-success = Build site
+      - "check-success=Test the PR's commit message for compliance with Conventional Commits."
+      - "check-success=Test the commit for REUSE Compliance."
     actions:
       review:
         type: APPROVE
+  - name: Automatically approve backported dependency-bump pull requests
+    conditions:
+      - author=github-actions[bot]
+      - label=dependencies
+      - base~=^release/
+      - "check-success=Test the PR's commit message for compliance with Conventional Commits."
+      - "check-success=Test the commit for REUSE Compliance."
+    actions:
+      review:
+        type: APPROVE
+  - name: Automatic merge for backported dependency-bump pull requests when its reviewed.
+    conditions:
+      - author=github-actions[bot]
+      - label=dependencies
+      - base~=^release/
+      - label != do-not-merge
+      - "#approved-reviews-by >= 1"
+      - -conflict
+      - -draft
+      - "check-success=Test the PR's commit message for compliance with Conventional Commits."
+      - "check-success=Test the commit for REUSE Compliance."
+    actions:
+      queue:
   - name: Delete head branch on merged pull requests
     conditions:
       - merged
