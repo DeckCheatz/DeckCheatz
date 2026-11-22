@@ -1,6 +1,6 @@
 {
-  "only-arches": ["x86_64"],
+  "only-arches": ["x86_64", "aarch64"],
   "skip-icons-check": true,
-  "automerge-flathubbot-prs": false,
-  "disable-external-data-checker": true
+  "automerge-flathubbot-prs": true,
+  "disable-external-data-checker": false
 }
