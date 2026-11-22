@@ -9,6 +9,9 @@ updates:
       interval: "weekly"
     commit-message:
       prefix: "chore(deps)"
+    labels:
+      - "dependencies"
+      - "rust"
     groups:
       cargo-deps:
         patterns:
@@ -19,6 +22,9 @@ updates:
       interval: "weekly"
     commit-message:
       prefix: "chore(ci-deps)"
+    labels:
+      - "dependencies"
+      - "github_actions"
     groups:
       gh-actions-deps:
         patterns:
