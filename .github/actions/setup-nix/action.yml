@@ -1,0 +1,9 @@
+# SPDX-FileCopyrightText: 2024-2025 The DeckCheatz Developers
+#
+# SPDX-License-Identifier: Apache-2.0
+name: Setup Nix
+description: Install Nix via the Determinate Nix installer. Requires the caller to have already checked out sources.
+runs:
+  using: composite
+  steps:
+    - uses: DeterminateSystems/nix-installer-action@main

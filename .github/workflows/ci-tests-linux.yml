@@ -13,20 +13,11 @@ jobs:
     steps:
       - name: Checkout sources
         uses: actions/checkout@v7
-      - name: Cache Rust assets
-        id: rust-cache
-        uses: Swatinem/rust-cache@v2
-      - name: Configure Rust
-        if: ${{ steps.rust-cache.outputs.cache-hit == 'false' }}
-        uses: dtolnay/rust-toolchain@stable
+      - name: Setup Rust and cross
+        uses: ./.github/actions/setup-rust-cross
         with:
-          components: clippy,rustfmt
           target: x86_64-unknown-linux-musl
-      - name: Install Cross
-        if: ${{ steps.rust-cache.outputs.cache-hit == 'false' }}
-        uses: taiki-e/install-action@v2.90.3
-        with:
-          tool: cross
+          components: clippy,rustfmt
       - name: Run tests
         run: $HOME/.cargo/bin/cross test --target=x86_64-unknown-linux-musl
       - name: Run Cargo checks

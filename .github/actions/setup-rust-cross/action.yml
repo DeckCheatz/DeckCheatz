@@ -1,0 +1,34 @@
+# SPDX-FileCopyrightText: 2024-2025 The DeckCheatz Developers
+#
+# SPDX-License-Identifier: Apache-2.0
+name: Setup Rust and cross
+description: Cache Rust assets, configure the Rust toolchain, and install cross. Requires the caller to have already checked out sources.
+inputs:
+  target:
+    description: Rust target triple to install and build for.
+    required: false
+    default: x86_64-unknown-linux-musl
+  components:
+    description: Comma-separated Rust toolchain components to install.
+    required: true
+outputs:
+  cache-hit:
+    description: Whether the Rust cache was hit.
+    value: ${{ steps.rust-cache.outputs.cache-hit }}
+runs:
+  using: composite
+  steps:
+    - name: Cache Rust assets
+      id: rust-cache
+      uses: Swatinem/rust-cache@v2
+    - name: Configure Rust
+      if: ${{ steps.rust-cache.outputs.cache-hit == 'false' }}
+      uses: dtolnay/rust-toolchain@stable
+      with:
+        components: ${{ inputs.components }}
+        targets: ${{ inputs.target }}
+    - name: Install Cross
+      if: ${{ steps.rust-cache.outputs.cache-hit == 'false' }}
+      uses: taiki-e/install-action@v2.90.3
+      with:
+        tool: cross
