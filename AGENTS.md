@@ -50,8 +50,10 @@ architecture.
 
 ## Merging
 
-- This repo uses Mergify's merge queue. Don't merge PRs manually via the
-  GitHub UI — see `.github/mergify.yml`.
+- This repo uses GitHub's native merge queue (configured via a branch
+  ruleset on `main`); the "Merge" button is replaced by "Merge when
+  ready". Minor/patch Dependabot updates and dependency backport PRs are
+  auto-approved and queued by `.github/workflows/dependabot-auto-merge.yml`.
 
 ## AI/LLM use
 
