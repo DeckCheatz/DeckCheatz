@@ -1,0 +1,24 @@
+# SPDX-FileCopyrightText: 2024-2025 The DeckCheatz Developers
+#
+# SPDX-License-Identifier: Apache-2.0
+name: Welcome new contributors
+on:
+  issues:
+    types: [opened]
+  pull_request_target:
+    types: [opened]
+permissions:
+  issues: write
+  pull-requests: write
+jobs:
+  welcome:
+    name: Greet first-time contributors
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/first-interaction@v3
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          issue_message: >
+            Thanks for opening your first issue on DeckCheatz! A maintainer will take a look soon.
+          pr_message: >
+            Thanks for your first pull request to DeckCheatz! A maintainer will review it soon.
